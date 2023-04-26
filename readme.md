@@ -14,5 +14,11 @@ Int2 Project
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/flower-classification.git
-cd flower-classification
+git clone https://github.com/INTTeam13/Assessment.git
+cd Assessment
+#install requirements
+pip install -r requirements.txt
+#or
+pip install torch torchvision scipy
+```
+
