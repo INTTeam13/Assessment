@@ -1,16 +1,19 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
-# note that flowers102 dataset require scipy
-# Define the data transformations for the dataset, so these will be applied to each image that are in the dataset
-data_transforms = transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224), # we're resizing the image to 256x256 and then cropping the center to 224x224
-    transforms.ToTensor(),
-    # found this on the internet, but to be changed later
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
+import matplotlib.pyplot as plt
+import numpy as np
 
+mean = [0.485, 0.456, 0.406]
+std = [0.229, 0.224, 0.225]
+
+data_transforms = transforms.Compose([
+    # Resize to 256x256 then crop to 224x224
+    transforms.Resize(256),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),
+    transforms.Normalize(torch.tensor(mean), torch.tensor(std))
+])
 
 # loading dataset directly from torchvision as suggested in our paper and we split the dataset into train, val, and test
 train_dataset = torchvision.datasets.Flowers102(root='./data', split='train', transform=data_transforms, download=True)
