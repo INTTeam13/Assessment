@@ -64,10 +64,10 @@ def evaluate_model_on_test_set(model, test_loader):
           (predicted_correctly_on_epoch, total, epoch_accuracy))
 
 
-def train_network(model, train_loader, test_loader, loss_function, optimizer, n_epoches):
+def train_network(model, train_loader, test_loader, loss_function, optimizer, n_epochs):
     device = set_device()
 
-    for epoch in range(n_epoches):
+    for epoch in range(n_epochs):
         print("Epoch number %d " % (epoch+1))
         model.train()
         running_loss = 0.0
@@ -101,9 +101,10 @@ def train_network(model, train_loader, test_loader, loss_function, optimizer, n_
         print("Training dataset - Classified %d out of %d images correctly (%.3f%%). Epoch loss: %.3f" %
               (running_correct, total, epoch_accuracy, epoch_loss))
 
-        evaluate_model_on_test_set(model, test_loader)
+    evaluate_model_on_test_set(model, test_loader)
 
-        return model
+    print("Finished")
+    return model
 
 
 # Set up nn model, resnet18 is a good pre-made model
@@ -120,4 +121,4 @@ loss_function = nn.CrossEntropyLoss()  # change loss function here, try ReLU and
 # weight_decay - helps reduce over-fitting
 optimizer = optim.SGD(resnet18_model.parameters(), lr=0.01, momentum=0.9, weight_decay=0.003)
 
-train_network(resnet18_model, train_loader, test_loader, loss_function, optimizer, 150)
+train_network(resnet18_model, train_loader, test_loader, loss_function, optimizer, 36)
