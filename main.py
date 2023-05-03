@@ -47,9 +47,9 @@ class CustomResNet(nn.Module):
         )
 
         self.layer1 = self._make_layer(block, 64, 2, stride=1)
-        self.layer2 = self._make_layer(block, 128, 4, stride=2)
-        self.layer3 = self._make_layer(block, 256, 6, stride=2)
-        self.layer4 = self._make_layer(block, 512, 8, stride=2)
+        self.layer2 = self._make_layer(block, 128, 2, stride=2)
+        self.layer3 = self._make_layer(block, 256, 2, stride=2)
+        self.layer4 = self._make_layer(block, 512, 2, stride=2)
 
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Linear(512, num_classes)
@@ -169,11 +169,10 @@ def validate_model(model, val_loader):
     return accuracy
 # Modify the train_network function to include validation and model saving
 def train_network(model, train_loader, val_loader, test_loader, loss_function, optimizer, scheduler, n_epochs):
-    start_time = time.time()  # Record start time
     device = set_device()
     best_val_accuracy = 0
     best_model_path = "best_model.pth"
-    validation_start_epoch = 300
+    start_time = time.time()  # Record start time
 
     for epoch in range(n_epochs):
         print("Epoch number %d " % (epoch + 1))
@@ -207,20 +206,20 @@ def train_network(model, train_loader, val_loader, test_loader, loss_function, o
         print("Training dataset - Classified %d out of %d images correctly (%.3f%%). Epoch loss: %.3f" %
               (running_correct, total, epoch_accuracy, epoch_loss))
 
-        # Start validation after validation_start_epoch
-        if epoch + 1 >= validation_start_epoch:
-            val_accuracy = validate_model(model, val_loader)
-            if val_accuracy > best_val_accuracy:
-                current_time = time.time()  # Record current time
-                elapsed_time = current_time - start_time
-                print("Validation accuracy improved from %.3f%% to %.3f%%. Saving the model. Time elapsed: %.2f seconds" % (
-                    best_val_accuracy, val_accuracy, elapsed_time))
-                best_val_accuracy = val_accuracy
-                torch.save(model.state_dict(), best_model_path)
-
-    end_time = time.time()  # Record end time
-    duration = end_time - start_time
-    print("Training completed in {:.2f} seconds.".format(duration))
+        val_accuracy = validate_model(model, val_loader)
+        if val_accuracy > best_val_accuracy:
+            print("Validation accuracy improved from %.3f%% to %.3f%%. Saving the model." % (
+            best_val_accuracy, val_accuracy))
+            best_val_accuracy = val_accuracy
+            torch.save({
+                'epoch': epoch + 1,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'best_val_accuracy': best_val_accuracy,
+            }, best_model_path)
+        end_time = time.time()  # Record end time
+        duration = end_time - start_time
+        print("Training completed in {:.2f} seconds.".format(duration))
 
 
 # Instantiate the custom model
