@@ -8,68 +8,69 @@ import torch.nn as nn
 import torch.optim as optim
 
 
-class ResidualBlock(nn.Module):
-    def __init__(self, in_channels, out_channels, stride=1):
-        super(ResidualBlock, self).__init__()
+class CustomCNN(nn.Module):
+    def __init__(self, num_classes=102):
+        super(CustomCNN, self).__init__()
+        self.relu = nn.ReLU()
+        self.max_pool = nn.MaxPool2d(2, 2)
+        self.conv1 = nn.Conv2d(3, 32, 3, stride=1, padding=1)
+        self.bn1 = nn.BatchNorm2d(32)
+        self.conv2 = nn.Conv2d(32, 64, 3, stride=1, padding=1)
+        self.bn2 = nn.BatchNorm2d(64)
+        self.conv3 = nn.Conv2d(64, 128, 3, stride=1, padding=1)
+        self.bn3 = nn.BatchNorm2d(128)
+        self.conv4 = nn.Conv2d(128, 256, 3, stride=1, padding=1)
+        self.bn4 = nn.BatchNorm2d(256)
+        self.conv5 = nn.Conv2d(256, 512, 3, stride=1, padding=1)
+        self.bn5 = nn.BatchNorm2d(512)
 
-        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(out_channels)
-        self.relu = nn.ReLU(inplace=True)
-        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=False)
-        self.bn2 = nn.BatchNorm2d(out_channels)
+        # Calculate the input size for the fully connected layer
+        fc1_input_size = self._get_fc1_input_size()
 
-        self.shortcut = nn.Sequential()
-        if stride != 1 or in_channels != out_channels:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride, bias=False),
-                nn.BatchNorm2d(out_channels)
-            )
+        self.fc1 = nn.Linear(fc1_input_size, 1024)
+        self.fc2 = nn.Linear(1024, num_classes)
+        self.dropout = nn.Dropout(0.6)
 
-    def forward(self, x):
-        out = self.relu(self.bn1(self.conv1(x)))
-        out = self.bn2(self.conv2(out))
-        out += self.shortcut(x)
-        out = self.relu(out)
-        return out
+    def _get_fc1_input_size(self):
+        dummy_input = torch.zeros(1, 3, 224, 224)
+        output = self._forward_features(dummy_input)
+        return output.view(-1).shape[0]
 
-
-class CustomResNet(nn.Module):
-    def __init__(self, block, num_classes=102):
-        super(CustomResNet, self).__init__()
-
-        self.in_channels = 64
-
-        self.conv1 = nn.Sequential(
-            nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False),
-            nn.BatchNorm2d(64),
-            nn.ReLU(inplace=True)
-        )
-
-        self.layer1 = self._make_layer(block, 64, 2, stride=1)
-        self.layer2 = self._make_layer(block, 128, 2, stride=2)
-        self.layer3 = self._make_layer(block, 256, 2, stride=2)
-        self.layer4 = self._make_layer(block, 512, 2, stride=2)
-
-        self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        self.fc = nn.Linear(512, num_classes)
-
-    def _make_layer(self, block, out_channels, num_blocks, stride):
-        strides = [stride] + [1] * (num_blocks - 1)
-        layers = []
-        for stride in strides:
-            layers.append(block(self.in_channels, out_channels, stride))
-            self.in_channels = out_channels
-        return nn.Sequential(*layers)
-
-    def forward(self, x):
+    def _forward_features(self, x):
         x = self.conv1(x)
-        x = self.layer1(x)
-        x = self.layer2(x)
-        x = self.layer3(x)
-        x = self.layer4(x)
-        x = self.avg_pool(x)
+        x = self.relu(x)
+        x = self.bn1(x)
+        x = self.max_pool(x)
+
+        x = self.conv2(x)
+        x = self.relu(x)
+        x = self.bn2(x)
+        x = self.max_pool(x)
+
+        x = self.conv3(x)
+        x = self.relu(x)
+        x = self.bn3(x)
+        x = self.max_pool(x)
+
+        x = self.conv4(x)
+        x = self.relu(x)
+        x = self.bn4(x)
+        x = self.max_pool(x)
+
+        x = self.conv5(x)
+        x = self.relu(x)
+        x = self.bn5(x)
+        x = self.max_pool(x)
+
+        return x
+
+    def forward(self, x):
+        x = self._forward_features(x)
         x = x.view(x.size(0), -1)
-        x = self.fc(x)
+        x = self.fc1(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+        x = self.fc2(x)
         return x
 mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
@@ -184,7 +185,7 @@ def train_network(model, train_loader, test_loader, loss_function, optimizer, n_
 # Load the best model and evaluate on the test dataset
 def test_saved_model(test_loader, model_path="best_model.pth"):
     # Load the saved model
-    saved_model = CustomResNet(ResidualBlock)
+    saved_model = CustomCNN()
     device = set_device()
     saved_model = saved_model.to(device)
 
