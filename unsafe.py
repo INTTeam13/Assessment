@@ -1,5 +1,3 @@
-from multiprocessing import freeze_support
-import time
 import torch
 import torchvision
 import torchvision.transforms as transforms
@@ -8,35 +6,61 @@ import torch.nn as nn
 import torch.optim as optim
 import cv2
 import numpy as np
+from skimage.feature import hog
+from sklearn.cluster import MiniBatchKMeans
+from sklearn.preprocessing import StandardScaler
+from PIL import Image
 
 
-class PreprocessingLayer(nn.Module):
-    def __init__(self):
-        super(PreprocessingLayer, self).__init__()
+# Extract features function
+def extract_features(image_tensor):
+    # Convert the tensor back to a numpy array and transpose the dimensions
+    image = image_tensor.numpy().transpose((1, 2, 0))
+    # Convert to grayscale and handle different numbers of channels
+    if image.shape[2] == 3:
+        gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY).astype(np.uint8)
+        hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+    elif image.shape[2] == 1:
+        gray = image.astype(np.uint8)
+        hsv = cv2.cvtColor(cv2.cvtColor(image, cv2.COLOR_GRAY2RGB), cv2.COLOR_RGB2HSV)
+    else:
+        raise ValueError("Unsupported number of channels in input image")
 
-    def forward(self, x):
-        x = x.mul(255.0)
-        x = x.permute(0, 2, 3, 1).cpu().numpy()
+    # Compute SIFT features
+    sift = cv2.xfeatures2d.SIFT_create()
+    _, sift_features = sift.detectAndCompute(gray, None)
 
-        for i in range(x.shape[0]):
-            img = x[i].astype(np.uint8)
-            img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+    # Compute HOG features
+    hog_features = hog(gray, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2), feature_vector=True,
+                       multichannel=False)
 
-            # Extract SIFT features
-            sift = cv2.SIFT_create()
-            _, sift_descriptors = sift.detectAndCompute(img, None)
+    return hsv, sift_features, hog_features
 
-            # Extract HOG features
-            hog = cv2.HOGDescriptor()
-            hog_features = hog.compute(img)
 
-            # Combine features
-            combined_features = np.concatenate((img.flatten(), sift_descriptors.flatten(), hog_features.flatten()))
 
-            x[i] = combined_features.reshape(1, -1)
+# Custom dataset class
+class Flowers102WithFeatures(torchvision.datasets.Flowers102):
+    def __init__(self, *args, **kwargs):
+        super(Flowers102WithFeatures, self).__init__(*args, **kwargs)
 
-        x = torch.from_numpy(x).float().to(device)
-        return x
+    def __getitem__(self, index):
+        image_path = self.images[index]
+        image = Image.open(image_path)
+        label = self.labels[index]
+
+        # Apply transformations
+        if self.transform:
+            image = self.transform(image)
+
+        # Extract features
+        image_np = np.array(image).astype(np.uint8)
+        hsv, sift_features, hog_features = extract_features(image_np)
+
+        hsv = torch.tensor(hsv, dtype=torch.float32)
+        sift_features = torch.tensor(sift_features, dtype=torch.float32)
+        hog_features = torch.tensor(hog_features, dtype=torch.float32)
+
+        return image, hsv, sift_features, hog_features, label
 
 
 class ResidualBlock(nn.Module):
@@ -63,11 +87,11 @@ class ResidualBlock(nn.Module):
         out = self.relu(out)
         return out
 
+
 class CustomResNet(nn.Module):
     def __init__(self, block, num_classes=102):
         super(CustomResNet, self).__init__()
 
-        self.preprocessing = PreprocessingLayer()
         self.in_channels = 64
 
         self.conv1 = nn.Sequential(
@@ -85,7 +109,7 @@ class CustomResNet(nn.Module):
         self.fc = nn.Linear(512, num_classes)
 
     def _make_layer(self, block, out_channels, num_blocks, stride):
-        strides = [stride] + [1] * (num_blocks  - 1)
+        strides = [stride] + [1] * (num_blocks - 1)
         layers = []
         for stride in strides:
             layers.append(block(self.in_channels, out_channels, stride))
@@ -93,7 +117,6 @@ class CustomResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        x = self.preprocessing(x)
         x = self.conv1(x)
         x = self.layer1(x)
         x = self.layer2(x)
@@ -109,41 +132,65 @@ mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
 
 data_transforms_train = transforms.Compose([
-    transforms.RandomResizedCrop(224, scale=(0.5, 1.0), ratio=(0.75, 1.333)),
-    transforms.RandomRotation(degrees=45),
+    transforms.RandomResizedCrop(224),
+    transforms.RandomRotation(30),
     transforms.RandomHorizontalFlip(),
-    transforms.RandomVerticalFlip(),
-    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-    transforms.RandomAffine(degrees=(-30, 30), translate=(0.1, 0.1), scale=(0.8, 1.2), shear=(-10, 10)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
-data_transforms_val = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.CenterCrop(224),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-data_transforms_test = transforms.Compose([
-    transforms.Resize((224, 224)),
+data_transforms_test_val = transforms.Compose([
+    transforms.Resize(256),
     transforms.CenterCrop(224),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
-
 
 # loading dataset directly from torchvision as suggested in our paper and we split the dataset into train, val, and test
-train_dataset = torchvision.datasets.Flowers102(root='./data', split='train', transform=data_transforms_train,
-                                                download=True)
-val_dataset = torchvision.datasets.Flowers102(root='./data', split='val', transform=data_transforms_val, download=True)
-test_dataset = torchvision.datasets.Flowers102(root='./data', split='test', transform=data_transforms_test,
-                                               download=True)
+train_dataset = Flowers102WithFeatures(root='./data', split='train', transform=data_transforms_train,
+                                       download=True)
+val_dataset = Flowers102WithFeatures(root='./data', split='val', transform=data_transforms_test_val, download=True)
+test_dataset = Flowers102WithFeatures(root='./data', split='test', transform=data_transforms_test_val,
+                                      download=True)
 
 # Create data loaders to load the data in batches
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=16, shuffle=True)
 val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=16, shuffle=False)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=16, shuffle=False)  # removed num_workers=2
+
+
+class CustomResNetWithFeatures(CustomResNet):
+    def forward(self, x, hsv, sift_features, hog_features):
+        x = self.conv1(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        x = self.avg_pool(x)
+        x = x.view(x.size(0), -1)
+
+        # Pad or truncate the SIFT features tensor to a fixed size
+        max_sift_features = 300
+        sift_features_padded = torch.zeros(x.size(0), max_sift_features, dtype=torch.float32)
+        for i, sift_feature in enumerate(sift_features):
+            if sift_feature.size(0) <= max_sift_features:
+                sift_features_padded[i, :sift_feature.size(0)] = sift_feature
+            else:
+                sift_features_padded[i] = sift_feature[:max_sift_features]
+
+        # Flatten the SIFT and HOG feature tensors
+        sift_features_flat = sift_features_padded.view(x.size(0), -1)
+        hog_features_flat = hog_features.view(x.size(0), -1)
+
+        # Flatten the HSV tensor and normalize it to the same range as the other features
+        hsv_flat = torch.flatten(hsv, start_dim=1, end_dim=3)
+        hsv_flat_normalized = hsv_flat / 255.0
+
+        # Concatenate features
+        x = torch.cat((x, hsv_flat_normalized, sift_features_flat, hog_features_flat), dim=1)
+
+        x = self.fc(x)
+        return x
 
 
 def set_device():
@@ -162,14 +209,15 @@ def evaluate_model_on_test_set(model, test_loader):
 
     with torch.no_grad():  # Speeds up process, does not allow back-prop
         for data in test_loader:
-            # Specifies batch size incase last batch does not end on even multiple of batch size
-            # (e.g. 29 images in last batch not 32)
-            images, labels = data
+            images, hsv, sift_features, hog_features, labels = data
             images = images.to(device)
+            hsv = hsv.to(device)
+            sift_features = sift_features.to(device)
+            hog_features = hog_features.to(device)
             labels = labels.to(device)
             total += labels.size(0)
 
-            outputs = model(images)  # Models classification of the images
+            outputs = model(images, hsv, sift_features, hog_features)  # Models classification of the images
 
             _, predicted = torch.max(outputs.data, 1)  # 1 specifies dimension it is reduced to
 
@@ -179,33 +227,10 @@ def evaluate_model_on_test_set(model, test_loader):
 
     print("Test dataset - Classified %d out of %d images correctly (%.3f%%)" %
           (predicted_correctly_on_epoch, total, epoch_accuracy))
-# Add a function to validate the model on the validation dataset
-def validate_model(model, val_loader):
-    model.eval()
-    correct = 0
-    total = 0
+
+
+def train_network(model, train_loader, test_loader, loss_function, optimizer, n_epochs):
     device = set_device()
-
-    with torch.no_grad():
-        for data in val_loader:
-            images, labels = data
-            images = images.to(device)
-            labels = labels.to(device)
-            total += labels.size(0)
-
-            outputs = model(images)
-            _, predicted = torch.max(outputs.data, 1)
-            correct += (predicted == labels).sum().item()
-
-    accuracy = (correct / total) * 100
-    print("Validation dataset - Classified %d out of %d images correctly (%.3f%%)" % (correct, total, accuracy))
-    return accuracy
-# Modify the train_network function to include validation and model saving
-def train_network(model, train_loader, val_loader, test_loader, loss_function, optimizer, scheduler, n_epochs):
-    device = set_device()
-    best_val_accuracy = 0
-    best_model_path = "best_model.pth"
-    start_time = time.time()  # Record start time
 
     for epoch in range(n_epochs):
         print("Epoch number %d " % (epoch + 1))
@@ -215,59 +240,47 @@ def train_network(model, train_loader, val_loader, test_loader, loss_function, o
         total = 0
 
         for data in train_loader:
-            images, labels = data
+            images, hsv, sift_features, hog_features, labels = data
             images = images.to(device)
+            hsv = hsv.to(device)
+            sift_features = sift_features.to(device)
+            hog_features = hog_features.to(device)
             labels = labels.to(device)
             total += labels.size(0)
 
             optimizer.zero_grad()
 
-            outputs = model(images)
-            _, predicted = torch.max(outputs.data, 1)
+            outputs = model(images, hsv, sift_features, hog_features)  # Models classification of the images
+
+            _, predicted = torch.max(outputs.data, 1)  # 1 specifies dimension it is reduced to
+
             loss = loss_function(outputs, labels)
 
-            loss.backward()
-            optimizer.step()
+            loss.backward()  # Back propagate through network
+
+            optimizer.step()  # Update weights
 
             running_loss += loss.item()
-            running_correct += (predicted == labels).sum().item()
-
-        scheduler.step()
+            running_correct += (labels == predicted).sum().item()
 
         epoch_loss = running_loss / len(train_loader)
-        epoch_accuracy = (running_correct / total) * 100
+        epoch_accuracy = (running_correct / total) * 100  # Get accuracy as percentage
+
         print("Training dataset - Classified %d out of %d images correctly (%.3f%%). Epoch loss: %.3f" %
               (running_correct, total, epoch_accuracy, epoch_loss))
 
-        val_accuracy = validate_model(model, val_loader)
-        if val_accuracy > best_val_accuracy:
-            print("Validation accuracy improved from %.3f%% to %.3f%%. Saving the model." % (
-            best_val_accuracy, val_accuracy))
-            best_val_accuracy = val_accuracy
-            torch.save({
-                'epoch': epoch + 1,
-                'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'best_val_accuracy': best_val_accuracy,
-            }, best_model_path)
-        end_time = time.time()  # Record end time
-        duration = end_time - start_time
-        print("Training completed in {:.2f} seconds.".format(duration))
+    evaluate_model_on_test_set(model, test_loader)
+
+    print("Finished")
+    return model
 
 
 # Instantiate the custom model
-custom_resnet = CustomResNet(ResidualBlock)
+custom_resnet = CustomResNetWithFeatures(ResidualBlock)
 device = set_device()
-custom_resnet = custom_resnet.to(device)
-
+custom_resnet = custom_resnet.to(device)  # Transfer the model to the GPU if available
 loss_function = nn.CrossEntropyLoss()
 
 optimizer = optim.SGD(custom_resnet.parameters(), lr=0.01, momentum=0.9, weight_decay=0.003)
 
-# Implement a learning rate scheduler
-scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
-
-# Increase the number of training epochs
-n_epochs = 350
-
-train_network(custom_resnet, train_loader, val_loader, test_loader, loss_function, optimizer, scheduler, n_epochs)
+train_network(custom_resnet, train_loader, test_loader, loss_function, optimizer, 400)

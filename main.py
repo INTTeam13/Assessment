@@ -1,6 +1,5 @@
-
 from multiprocessing import freeze_support
-import time
+
 import torch
 import torchvision
 import torchvision.transforms as transforms
@@ -76,35 +75,28 @@ mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
 
 data_transforms_train = transforms.Compose([
-    transforms.RandomResizedCrop(224, scale=(0.5, 1.0), ratio=(0.75, 1.333)),
-    transforms.RandomRotation(degrees=45),
+    transforms.RandomResizedCrop(224),
+    transforms.RandomRotation(30),
     transforms.RandomHorizontalFlip(),
-    transforms.RandomVerticalFlip(),
-    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-    transforms.RandomAffine(degrees=(-30, 30), translate=(0.1, 0.1), scale=(0.8, 1.2), shear=(-10, 10)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
-data_transforms_val = transforms.Compose([
-    transforms.Resize((224, 224)),
+
+
+data_transforms_test_val = transforms.Compose([
+    transforms.Resize(256),
     transforms.CenterCrop(224),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-data_transforms_test = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
 
 
 # loading dataset directly from torchvision as suggested in our paper and we split the dataset into train, val, and test
 train_dataset = torchvision.datasets.Flowers102(root='./data', split='train', transform=data_transforms_train,
                                                 download=True)
-val_dataset = torchvision.datasets.Flowers102(root='./data', split='val', transform=data_transforms_val, download=True)
-test_dataset = torchvision.datasets.Flowers102(root='./data', split='test', transform=data_transforms_test,
+val_dataset = torchvision.datasets.Flowers102(root='./data', split='val', transform=data_transforms_test_val, download=True)
+test_dataset = torchvision.datasets.Flowers102(root='./data', split='test', transform=data_transforms_test_val,
                                                download=True)
 
 # Create data loaders to load the data in batches
@@ -146,36 +138,12 @@ def evaluate_model_on_test_set(model, test_loader):
 
     print("Test dataset - Classified %d out of %d images correctly (%.3f%%)" %
           (predicted_correctly_on_epoch, total, epoch_accuracy))
-# Add a function to validate the model on the validation dataset
-def validate_model(model, val_loader):
-    model.eval()
-    correct = 0
-    total = 0
+
+def train_network(model, train_loader, test_loader, loss_function, optimizer, n_epochs):
     device = set_device()
-
-    with torch.no_grad():
-        for data in val_loader:
-            images, labels = data
-            images = images.to(device)
-            labels = labels.to(device)
-            total += labels.size(0)
-
-            outputs = model(images)
-            _, predicted = torch.max(outputs.data, 1)
-            correct += (predicted == labels).sum().item()
-
-    accuracy = (correct / total) * 100
-    print("Validation dataset - Classified %d out of %d images correctly (%.3f%%)" % (correct, total, accuracy))
-    return accuracy
-# Modify the train_network function to include validation and model saving
-def train_network(model, train_loader, val_loader, test_loader, loss_function, optimizer, scheduler, n_epochs):
-    device = set_device()
-    best_val_accuracy = 0
-    best_model_path = "best_model.pth"
-    start_time = time.time()  # Record start time
 
     for epoch in range(n_epochs):
-        print("Epoch number %d " % (epoch + 1))
+        print("Epoch number %d " % (epoch+1))
         model.train()
         running_loss = 0.0
         running_correct = 0.0
@@ -189,52 +157,53 @@ def train_network(model, train_loader, val_loader, test_loader, loss_function, o
 
             optimizer.zero_grad()
 
-            outputs = model(images)
-            _, predicted = torch.max(outputs.data, 1)
+            outputs = model(images)  # Models classification of the images
+
+            _, predicted = torch.max(outputs.data, 1)  # 1 specifies dimension it is reduced to
+
             loss = loss_function(outputs, labels)
 
-            loss.backward()
-            optimizer.step()
+            loss.backward()  # Back propagate through network
+
+            optimizer.step()  # Update weights
 
             running_loss += loss.item()
-            running_correct += (predicted == labels).sum().item()
-
-        scheduler.step()
+            running_correct += (labels == predicted).sum().item()
 
         epoch_loss = running_loss / len(train_loader)
-        epoch_accuracy = (running_correct / total) * 100
+        epoch_accuracy = (running_correct / total) * 100  # Get accuracy as percentage
+
         print("Training dataset - Classified %d out of %d images correctly (%.3f%%). Epoch loss: %.3f" %
               (running_correct, total, epoch_accuracy, epoch_loss))
 
-        val_accuracy = validate_model(model, val_loader)
-        if val_accuracy > best_val_accuracy:
-            print("Validation accuracy improved from %.3f%% to %.3f%%. Saving the model." % (
-            best_val_accuracy, val_accuracy))
-            best_val_accuracy = val_accuracy
-            torch.save({
-                'epoch': epoch + 1,
-                'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'best_val_accuracy': best_val_accuracy,
-            }, best_model_path)
-        end_time = time.time()  # Record end time
-        duration = end_time - start_time
-        print("Training completed in {:.2f} seconds.".format(duration))
+    evaluate_model_on_test_set(model, test_loader)
+
+    print("Finished")
+    return model
+
+# Load the best model and evaluate on the test dataset
+def test_saved_model(test_loader, model_path="best_model.pth"):
+    # Load the saved model
+    saved_model = CustomResNet(ResidualBlock)
+    device = set_device()
+    saved_model = saved_model.to(device)
+
+    checkpoint = torch.load(model_path)
+    saved_model.load_state_dict(checkpoint['model_state_dict'])
+
+    # Evaluate the model on the test dataset
+    evaluate_model_on_test_set(saved_model, test_loader)
 
 
-# Instantiate the custom model
-custom_resnet = CustomResNet(ResidualBlock)
-device = set_device()
-custom_resnet = custom_resnet.to(device)
-
-loss_function = nn.CrossEntropyLoss()
-
-optimizer = optim.SGD(custom_resnet.parameters(), lr=0.01, momentum=0.9, weight_decay=0.003)
-
-# Implement a learning rate scheduler
-scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
-
-# Increase the number of training epochs
-n_epochs = 350
-
-train_network(custom_resnet, train_loader, val_loader, test_loader, loss_function, optimizer, scheduler, n_epochs)
+# Test the saved model with the test dataset
+test_saved_model(test_loader)
+#
+# # Instantiate the custom model
+# custom_resnet = CustomResNet(ResidualBlock)
+# device = set_device()
+# custom_resnet = custom_resnet.to(device)  # Transfer the model to the GPU
+# loss_function = nn.CrossEntropyLoss()
+#
+# optimizer = optim.SGD(custom_resnet.parameters(), lr=0.01, momentum=0.9, weight_decay=0.003)
+#
+# train_network(custom_resnet, train_loader, test_loader, loss_function, optimizer, 400)
