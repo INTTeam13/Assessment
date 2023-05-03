@@ -1,76 +1,74 @@
 from multiprocessing import freeze_support
-
 import torch
 import torchvision
 import torchvision.transforms as transforms
 import torchvision.models as models
 import torch.nn as nn
 import torch.optim as optim
+import time
 
+class ResidualBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, stride=1):
+        super(ResidualBlock, self).__init__()
 
-class CustomCNN(nn.Module):
-    def __init__(self, num_classes=102):
-        super(CustomCNN, self).__init__()
-        self.relu = nn.ReLU()
-        self.max_pool = nn.MaxPool2d(2, 2)
-        self.conv1 = nn.Conv2d(3, 32, 3, stride=1, padding=1)
-        self.bn1 = nn.BatchNorm2d(32)
-        self.conv2 = nn.Conv2d(32, 64, 3, stride=1, padding=1)
-        self.bn2 = nn.BatchNorm2d(64)
-        self.conv3 = nn.Conv2d(64, 128, 3, stride=1, padding=1)
-        self.bn3 = nn.BatchNorm2d(128)
-        self.conv4 = nn.Conv2d(128, 256, 3, stride=1, padding=1)
-        self.bn4 = nn.BatchNorm2d(256)
-        self.conv5 = nn.Conv2d(256, 512, 3, stride=1, padding=1)
-        self.bn5 = nn.BatchNorm2d(512)
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(out_channels)
+        self.relu = nn.ReLU(inplace=True)
+        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(out_channels)
 
-        # Calculate the input size for the fully connected layer
-        fc1_input_size = self._get_fc1_input_size()
-
-        self.fc1 = nn.Linear(fc1_input_size, 1024)
-        self.fc2 = nn.Linear(1024, num_classes)
-        self.dropout = nn.Dropout(0.6)
-
-    def _get_fc1_input_size(self):
-        dummy_input = torch.zeros(1, 3, 224, 224)
-        output = self._forward_features(dummy_input)
-        return output.view(-1).shape[0]
-
-    def _forward_features(self, x):
-        x = self.conv1(x)
-        x = self.relu(x)
-        x = self.bn1(x)
-        x = self.max_pool(x)
-
-        x = self.conv2(x)
-        x = self.relu(x)
-        x = self.bn2(x)
-        x = self.max_pool(x)
-
-        x = self.conv3(x)
-        x = self.relu(x)
-        x = self.bn3(x)
-        x = self.max_pool(x)
-
-        x = self.conv4(x)
-        x = self.relu(x)
-        x = self.bn4(x)
-        x = self.max_pool(x)
-
-        x = self.conv5(x)
-        x = self.relu(x)
-        x = self.bn5(x)
-        x = self.max_pool(x)
-
-        return x
+        self.shortcut = nn.Sequential()
+        if stride != 1 or in_channels != out_channels:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride, bias=False),
+                nn.BatchNorm2d(out_channels)
+            )
 
     def forward(self, x):
-        x = self._forward_features(x)
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+        out += self.shortcut(x)
+        out = self.relu(out)
+        return out
+
+
+class CustomResNet(nn.Module):
+    def __init__(self, block, num_classes=102):
+        super(CustomResNet, self).__init__()
+
+        self.in_channels = 64
+
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.BatchNorm2d(64),
+            nn.ReLU(inplace=True)
+        )
+
+        self.layer1 = self._make_layer(block, 64, 2, stride=1)
+        self.layer2 = self._make_layer(block, 128, 2, stride=2)
+        self.layer3 = self._make_layer(block, 256, 2, stride=2)
+        self.layer4 = self._make_layer(block, 512, 2, stride=2)
+
+        self.avg_pool = nn.AdaptiveAvgPool2d(1)
+        self.fc = nn.Linear(512, num_classes)
+
+    def _make_layer(self, block, out_channels, num_blocks, stride):
+        strides = [stride] + [1] * (num_blocks - 1)
+        layers = []
+        for stride in strides:
+            layers.append(block(self.in_channels, out_channels, stride))
+            self.in_channels = out_channels
+        return nn.Sequential(*layers)
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        x = self.avg_pool(x)
         x = x.view(x.size(0), -1)
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.dropout(x)
-        x = self.fc2(x)
+        x = self.fc(x)
         return x
 mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
@@ -105,7 +103,27 @@ train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=16, shuffle
 val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=16, shuffle=False)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=16, shuffle=False)  # removed num_workers=2
 
+# Add a function to validate the model on the validation dataset
+def validate_model(model, val_loader):
+    model.eval()
+    correct = 0
+    total = 0
+    device = set_device()
 
+    with torch.no_grad():
+        for data in val_loader:
+            images, labels = data
+            images = images.to(device)
+            labels = labels.to(device)
+            total += labels.size(0)
+
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            correct += (predicted == labels).sum().item()
+
+    accuracy = (correct / total) * 100
+    print("Validation dataset - Classified %d out of %d images correctly (%.3f%%)" % (correct, total, accuracy))
+    return accuracy
 def set_device():
     if torch.cuda.is_available():
         dev = "cuda:0"
@@ -140,11 +158,15 @@ def evaluate_model_on_test_set(model, test_loader):
     print("Test dataset - Classified %d out of %d images correctly (%.3f%%)" %
           (predicted_correctly_on_epoch, total, epoch_accuracy))
 
-def train_network(model, train_loader, test_loader, loss_function, optimizer, n_epochs):
+# Modify the train_network function to include validation and model saving
+def train_network(model, train_loader, val_loader, test_loader, loss_function, optimizer, n_epochs):
     device = set_device()
+    best_val_accuracy = 0
+    best_model_path = "best_model.pth"
+    start_time = time.time()  # Record start time
 
     for epoch in range(n_epochs):
-        print("Epoch number %d " % (epoch+1))
+        print("Epoch number %d " % (epoch + 1))
         model.train()
         running_loss = 0.0
         running_correct = 0.0
@@ -158,53 +180,51 @@ def train_network(model, train_loader, test_loader, loss_function, optimizer, n_
 
             optimizer.zero_grad()
 
-            outputs = model(images)  # Models classification of the images
-
-            _, predicted = torch.max(outputs.data, 1)  # 1 specifies dimension it is reduced to
-
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
             loss = loss_function(outputs, labels)
 
-            loss.backward()  # Back propagate through network
-
-            optimizer.step()  # Update weights
+            loss.backward()
+            optimizer.step()
 
             running_loss += loss.item()
-            running_correct += (labels == predicted).sum().item()
+            running_correct += (predicted == labels).sum().item()
+
 
         epoch_loss = running_loss / len(train_loader)
-        epoch_accuracy = (running_correct / total) * 100  # Get accuracy as percentage
-
+        epoch_accuracy = (running_correct / total) * 100
+        # log current time
+        pause = time.time()
+        print("Time elapsed: {:.2f} seconds".format(pause - start_time))
         print("Training dataset - Classified %d out of %d images correctly (%.3f%%). Epoch loss: %.3f" %
               (running_correct, total, epoch_accuracy, epoch_loss))
+        if epoch>(n_epochs-40):
 
+            val_accuracy = validate_model(model, val_loader)
+            if val_accuracy > best_val_accuracy:
+                print("Validation accuracy improved from %.3f%% to %.3f%%. Saving the model." % (
+                    best_val_accuracy, val_accuracy))
+                best_val_accuracy = val_accuracy
+                state = {'model': model.state_dict(), 'optim': optimizer.state_dict()}
+                torch.save(state, best_model_path)
+    end_time = time.time()  # Record end time
+    duration = end_time - start_time
+    print("Training completed in {:.2f} seconds.".format(duration))
     evaluate_model_on_test_set(model, test_loader)
 
-    print("Finished")
-    return model
 
-# Load the best model and evaluate on the test dataset
-def test_saved_model(test_loader, model_path="best_model.pth"):
-    # Load the saved model
-    saved_model = CustomCNN()
-    device = set_device()
-    saved_model = saved_model.to(device)
+# Instantiate the custom model
+custom_resnet = CustomResNet(ResidualBlock)
+device = set_device()
+custom_resnet = custom_resnet.to(device)
 
-    checkpoint = torch.load(model_path)
-    saved_model.load_state_dict(checkpoint['model_state_dict'])
+loss_function = nn.CrossEntropyLoss()
 
-    # Evaluate the model on the test dataset
-    evaluate_model_on_test_set(saved_model, test_loader)
+optimizer = optim.SGD(custom_resnet.parameters(), lr=0.01, momentum=0.9, weight_decay=0.003)
 
 
-# Test the saved model with the test dataset
-test_saved_model(test_loader)
-#
-# # Instantiate the custom model
-# custom_resnet = CustomResNet(ResidualBlock)
-# device = set_device()
-# custom_resnet = custom_resnet.to(device)  # Transfer the model to the GPU
-# loss_function = nn.CrossEntropyLoss()
-#
-# optimizer = optim.SGD(custom_resnet.parameters(), lr=0.01, momentum=0.9, weight_decay=0.003)
-#
-# train_network(custom_resnet, train_loader, test_loader, loss_function, optimizer, 400)
+
+# Increase the number of training epochs
+n_epochs = 400
+
+train_network(custom_resnet, train_loader, val_loader, test_loader, loss_function, optimizer, n_epochs)

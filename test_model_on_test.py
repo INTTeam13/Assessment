@@ -76,7 +76,6 @@ class CustomResNet(nn.Module):
 
 data_transforms_test_val = transforms.Compose([
     transforms.Resize(256),
-    transforms.CenterCrop(224),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
@@ -102,6 +101,7 @@ def evaluate_model_on_test_set(model, test_loader):
             _, predicted = torch.max(outputs.data, 1)  # 1 specifies dimension it is reduced to
 
             predicted_correctly_on_epoch += (labels == predicted).sum().item()
+            print("Predicted correctly: %d out of %d" % (predicted_correctly_on_epoch, total))
 
     epoch_accuracy = (predicted_correctly_on_epoch / total) * 100  # Get accuracy as percentage
 
@@ -116,6 +116,7 @@ test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=16, shuffle=F
 def test_saved_model(test_loader, model_path="best_model.pth"):
     # Load the saved model
     saved_model = CustomResNet(ResidualBlock)
+    print("Loading saved model from: " + model_path)
     device = set_device()
     saved_model = saved_model.to(device)
 
