@@ -173,6 +173,7 @@ def train_network(model, train_loader, val_loader, test_loader, loss_function, o
     device = set_device()
     best_val_accuracy = 0
     best_model_path = "best_model.pth"
+    validation_start_epoch = 300
 
     for epoch in range(n_epochs):
         print("Epoch number %d " % (epoch + 1))
@@ -206,14 +207,16 @@ def train_network(model, train_loader, val_loader, test_loader, loss_function, o
         print("Training dataset - Classified %d out of %d images correctly (%.3f%%). Epoch loss: %.3f" %
               (running_correct, total, epoch_accuracy, epoch_loss))
 
-        val_accuracy = validate_model(model, val_loader)
-        if val_accuracy > best_val_accuracy:
-            current_time = time.time()  # Record current time
-            elapsed_time = current_time - start_time
-            print("Validation accuracy improved from %.3f%% to %.3f%%. Saving the model. Time elapsed: %.2f seconds" % (
-                best_val_accuracy, val_accuracy, elapsed_time))
-            best_val_accuracy = val_accuracy
-            torch.save(model.state_dict(), best_model_path)
+        # Start validation after validation_start_epoch
+        if epoch + 1 >= validation_start_epoch:
+            val_accuracy = validate_model(model, val_loader)
+            if val_accuracy > best_val_accuracy:
+                current_time = time.time()  # Record current time
+                elapsed_time = current_time - start_time
+                print("Validation accuracy improved from %.3f%% to %.3f%%. Saving the model. Time elapsed: %.2f seconds" % (
+                    best_val_accuracy, val_accuracy, elapsed_time))
+                best_val_accuracy = val_accuracy
+                torch.save(model.state_dict(), best_model_path)
 
     end_time = time.time()  # Record end time
     duration = end_time - start_time
