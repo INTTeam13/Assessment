@@ -74,17 +74,20 @@ mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
 
 data_transforms_train = transforms.Compose([
-    transforms.RandomResizedCrop(224),
-    transforms.RandomRotation(30),
-    transforms.RandomHorizontalFlip(),
+ transforms.RandomRotation(degrees=(-20, 20)),
+    transforms.RandomHorizontalFlip(p=0.5),
+    transforms.RandomResizedCrop(size=(224, 224)),
+    transforms.RandomApply([
+        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2)
+    ], p=0.5),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
 
 data_transforms_test_val = transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),
+ transforms.Resize((300, 300)),
+    transforms.CenterCrop((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
@@ -162,7 +165,7 @@ def evaluate_model_on_test_set(model, test_loader):
 def train_network(model, train_loader, val_loader, test_loader, loss_function, optimizer, n_epochs):
     device = set_device()
     best_val_accuracy = 0
-    best_model_path = "best_model.pth"
+    best_model_path = "best_model2.pth"
     start_time = time.time()  # Record start time
 
     for epoch in range(n_epochs):
@@ -198,7 +201,7 @@ def train_network(model, train_loader, val_loader, test_loader, loss_function, o
         print("Time elapsed: {:.2f} seconds".format(pause - start_time))
         print("Training dataset - Classified %d out of %d images correctly (%.3f%%). Epoch loss: %.3f" %
               (running_correct, total, epoch_accuracy, epoch_loss))
-        if epoch>(n_epochs-40):
+        if epoch>(n_epochs-300):
 
             val_accuracy = validate_model(model, val_loader)
             if val_accuracy > best_val_accuracy:
@@ -220,7 +223,7 @@ custom_resnet = custom_resnet.to(device)
 
 loss_function = nn.CrossEntropyLoss()
 
-optimizer = optim.SGD(custom_resnet.parameters(), lr=0.01, momentum=0.9, weight_decay=0.003)
+optimizer = optim.SGD(custom_resnet.parameters(), lr=0.0005, momentum=0.9, weight_decay=0.0005)
 
 
 

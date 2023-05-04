@@ -75,7 +75,8 @@ class CustomResNet(nn.Module):
 
 
 data_transforms_test_val = transforms.Compose([
-    transforms.Resize((224, 224)),
+    transforms.Resize((300, 300)),
+    transforms.CenterCrop((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
@@ -99,9 +100,11 @@ def evaluate_model_on_test_set(model, test_loader):
             outputs = model(images)  # Models classification of the images
 
             _, predicted = torch.max(outputs.data, 1)  # 1 specifies dimension it is reduced to
+            print("accuracy of this batch in percentage: ", (predicted == labels).sum().item() / labels.size(0) * 100)
 
             predicted_correctly_on_epoch += (labels == predicted).sum().item()
             print("Predicted correctly: %d out of %d" % (predicted_correctly_on_epoch, total))
+            print("Total Accuracy: %.3f%%" % ((predicted_correctly_on_epoch / total) * 100))
 
     epoch_accuracy = (predicted_correctly_on_epoch / total) * 100  # Get accuracy as percentage
 
@@ -113,7 +116,7 @@ test_dataset = torchvision.datasets.Flowers102(root='./data', split='test', tran
 
 # Create data loaders to load the data in batches
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=16, shuffle=False)  # removed num_workers=2
-def test_saved_model(test_loader, model_path="best_model.pth"):
+def test_saved_model(test_loader, model_path="best_model2.pth"):
     # Load the saved model
     saved_model = CustomResNet(ResidualBlock)
     print("Loading saved model from: " + model_path)
@@ -121,7 +124,7 @@ def test_saved_model(test_loader, model_path="best_model.pth"):
     saved_model = saved_model.to(device)
 
     checkpoint = torch.load(model_path, map_location=device)  # Added map_location parameter
-    saved_model.load_state_dict(checkpoint['model_state_dict'])
+    saved_model.load_state_dict(checkpoint['model'])
 
     # Evaluate the model on the test dataset
     evaluate_model_on_test_set(saved_model, test_loader)
