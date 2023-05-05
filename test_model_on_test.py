@@ -129,7 +129,7 @@ test_dataset = torchvision.datasets.Flowers102(root='./data', split='test', tran
 
 # Create data loaders to load the data in batches
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=16, shuffle=False)  # removed num_workers=2
-def test_saved_model(test_loader, model_path="best_model2.pth"):
+def test_saved_model(test_loader, model_path="best_modelresnet.pth"):
     # Load the saved model
     saved_model = CustomResNet(ResidualBlock)
     print("Loading saved model from: " + model_path)

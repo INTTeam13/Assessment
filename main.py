@@ -102,9 +102,9 @@ test_dataset = torchvision.datasets.Flowers102(root='./data', split='test', tran
                                                download=True)
 
 # Create data loaders to load the data in batches
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=16, shuffle=True)
-val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=16, shuffle=False)
-test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=16, shuffle=False)  # removed num_workers=2
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=10, shuffle=True)
+val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=10, shuffle=False)
+test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=10, shuffle=False)  # removed num_workers=2
 
 # Add a function to validate the model on the validation dataset
 def validate_model(model, val_loader):
@@ -201,7 +201,7 @@ def train_network(model, train_loader, val_loader, test_loader, loss_function, o
         print("Time elapsed: {:.2f} seconds".format(pause - start_time))
         print("Training dataset - Classified %d out of %d images correctly (%.3f%%). Epoch loss: %.3f" %
               (running_correct, total, epoch_accuracy, epoch_loss))
-        if epoch>(n_epochs-300):
+        if epoch>(n_epochs-100):
 
             val_accuracy = validate_model(model, val_loader)
             if val_accuracy > best_val_accuracy:
@@ -228,6 +228,6 @@ optimizer = optim.SGD(custom_resnet.parameters(), lr=0.0005, momentum=0.9, weigh
 
 
 # Increase the number of training epochs
-n_epochs = 400
+n_epochs = 1000
 
 train_network(custom_resnet, train_loader, val_loader, test_loader, loss_function, optimizer, n_epochs)
