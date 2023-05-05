@@ -2,6 +2,7 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 import torch.nn as nn
+from collections import defaultdict
 
 class ResidualBlock(nn.Module):
     def __init__(self, in_channels, out_channels, stride=1):
@@ -82,35 +83,47 @@ data_transforms_test_val = transforms.Compose([
 ])
 
 
+
+
 def evaluate_model_on_test_set(model, test_loader):
     model.eval()
     predicted_correctly_on_epoch = 0
     total = 0
     device = set_device()
 
-    with torch.no_grad():  # Speeds up process, does not allow back-prop
+    # Initialize a dictionary to track the number of incorrect predictions per class
+    incorrect_predictions = defaultdict(int)
+
+    with torch.no_grad():
         for data in test_loader:
-            # Specifies batch size incase last batch does not end on even multiple of batch size
-            # (e.g. 29 images in last batch not 32)
             images, labels = data
             images = images.to(device)
             labels = labels.to(device)
             total += labels.size(0)
 
-            outputs = model(images)  # Models classification of the images
-
-            _, predicted = torch.max(outputs.data, 1)  # 1 specifies dimension it is reduced to
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
             print("accuracy of this batch in percentage: ", (predicted == labels).sum().item() / labels.size(0) * 100)
+
+            # Get indices of the incorrect predictions
+            incorrect_indices = (predicted != labels).nonzero(as_tuple=True)[0]
+            for idx in incorrect_indices:
+                true_label = labels[idx].item()
+                incorrect_predictions[true_label] += 1
 
             predicted_correctly_on_epoch += (labels == predicted).sum().item()
             print("Predicted correctly: %d out of %d" % (predicted_correctly_on_epoch, total))
             print("Total Accuracy: %.3f%%" % ((predicted_correctly_on_epoch / total) * 100))
 
-    epoch_accuracy = (predicted_correctly_on_epoch / total) * 100  # Get accuracy as percentage
+    epoch_accuracy = (predicted_correctly_on_epoch / total) * 100
 
     print("Test dataset - Classified %d out of %d images correctly (%.3f%%)" %
           (predicted_correctly_on_epoch, total, epoch_accuracy))
 
+    # Print the incorrect predictions statistics
+    print("Incorrect predictions statistics:")
+    for class_id, count in incorrect_predictions.items():
+        print(f"Class {class_id}: {count} incorrect predictions")
 test_dataset = torchvision.datasets.Flowers102(root='./data', split='test', transform=data_transforms_test_val,
                                                download=True)
 
