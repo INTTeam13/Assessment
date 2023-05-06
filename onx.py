@@ -1,10 +1,11 @@
-import netron
+# import netron
 import torch
 import torchvision
 import torchvision.transforms as transforms
 import torch.nn as nn
 from collections import defaultdict
 import math
+from torch.utils.tensorboard import SummaryWriter
 
 
 class Swish(nn.Module):
@@ -117,7 +118,6 @@ def efficientnet_b0(num_classes=102):
     return EfficientNet(1.0, 1.0, 0.2, num_classes)
 
 
-
 def test_saved_model(model_path="best_model.pth"):
     # Load the saved model
     saved_model = efficientnet_b0()
@@ -125,13 +125,22 @@ def test_saved_model(model_path="best_model.pth"):
     device = set_device()
     saved_model = saved_model.to(device)
     checkpoint = torch.load(model_path, map_location=device)  # Added map_location parameter
-    print(checkpoint)
 
     saved_model.load_state_dict(checkpoint['model'])
-    dummy_input = torch.randn(1, 3, 224, 224)
-    torch.onnx.export(saved_model, dummy_input, "efficientnet_b0.onnx", input_names=["input"], output_names=["output"],
-                      verbose=True)
-    netron.start("efficientnet_b0.onnx")
+
+    # Create a summary writer
+    writer = SummaryWriter()
+
+    # Add the graph of the model to TensorBoard
+    dummy_input = torch.randn(1, 3, 224, 224).to(device)
+    writer.add_graph(saved_model, dummy_input)
+
+    # # Export the model to ONNX format
+    # torch.onnx.export(saved_model, dummy_input, "efficientnet_b0.onnx", input_names=["input"], output_names=["output"],
+    #                   verbose=True)
+    #
+    # # Launch Netron to visualize the ONNX model
+    # netron.start("efficientnet_b0.onnx")
 
 
 # Test the saved model with the test dataset
