@@ -1,0 +1,810 @@
+Epoch loss: 0.609
+Epoch number 967
+Time elapsed: 25125.94 seconds
+Training dataset - Classified 863 out of 1020 images correctly (84.608%). Epoch loss: 0.599
+Epoch number 968
+Time elapsed: 25151.54 seconds
+Training dataset - Classified 849 out of 1020 images correctly (83.235%). Epoch loss: 0.615
+Epoch number 969
+Time elapsed: 25178.21 seconds
+Training dataset - Classified 880 out of 1020 images correctly (86.275%). Epoch loss: 0.538
+Epoch number 970
+Time elapsed: 25202.81 seconds
+Training dataset - Classified 844 out of 1020 images correctly (82.745%). Epoch loss: 0.662
+Epoch number 971
+Time elapsed: 25227.81 seconds
+Training dataset - Classified 856 out of 1020 images correctly (83.922%). Epoch loss: 0.571
+Epoch number 972
+Time elapsed: 25253.61 seconds
+Training dataset - Classified 860 out of 1020 images correctly (84.314%). Epoch loss: 0.579
+Epoch number 973
+Time elapsed: 25278.30 seconds
+Training dataset - Classified 874 out of 1020 images correctly (85.686%). Epoch loss: 0.572
+Epoch number 974
+Time elapsed: 25302.91 seconds
+Training dataset - Classified 865 out of 1020 images correctly (84.804%). Epoch loss: 0.575
+Epoch number 975
+Time elapsed: 25327.89 seconds
+Training dataset - Classified 880 out of 1020 images correctly (86.275%). Epoch loss: 0.536
+Epoch number 976
+Time elapsed: 25352.44 seconds
+Training dataset - Classified 864 out of 1020 images correctly (84.706%). Epoch loss: 0.573
+Epoch number 977
+Time elapsed: 25377.00 seconds
+Training dataset - Classified 866 out of 1020 images correctly (84.902%). Epoch loss: 0.551
+Epoch number 978
+Time elapsed: 25401.74 seconds
+Training dataset - Classified 867 out of 1020 images correctly (85.000%). Epoch loss: 0.565
+Epoch number 979
+Time elapsed: 25427.21 seconds
+Training dataset - Classified 889 out of 1020 images correctly (87.157%). Epoch loss: 0.520
+Epoch number 980
+Time elapsed: 25452.02 seconds
+Training dataset - Classified 862 out of 1020 images correctly (84.510%). Epoch loss: 0.610
+Epoch number 981
+Time elapsed: 25476.73 seconds
+Training dataset - Classified 856 out of 1020 images correctly (83.922%). Epoch loss: 0.626
+Epoch number 982
+Time elapsed: 25500.66 seconds
+Training dataset - Classified 886 out of 1020 images correctly (86.863%). Epoch loss: 0.505
+Epoch number 983
+Time elapsed: 25524.32 seconds
+Training dataset - Classified 858 out of 1020 images correctly (84.118%). Epoch loss: 0.614
+Epoch number 984
+Time elapsed: 25549.02 seconds
+Training dataset - Classified 860 out of 1020 images correctly (84.314%). Epoch loss: 0.571
+Epoch number 985
+Time elapsed: 25572.65 seconds
+Training dataset - Classified 851 out of 1020 images correctly (83.431%). Epoch loss: 0.648
+Epoch number 986
+Time elapsed: 25598.25 seconds
+Training dataset - Classified 853 out of 1020 images correctly (83.627%). Epoch loss: 0.613
+Epoch number 987
+Time elapsed: 25622.85 seconds
+Training dataset - Classified 869 out of 1020 images correctly (85.196%). Epoch loss: 0.588
+Epoch number 988
+Time elapsed: 25648.06 seconds
+Training dataset - Classified 888 out of 1020 images correctly (87.059%). Epoch loss: 0.505
+Epoch number 989
+Time elapsed: 25673.07 seconds
+Training dataset - Classified 888 out of 1020 images correctly (87.059%). Epoch loss: 0.501
+Epoch number 990
+Time elapsed: 25696.61 seconds
+Training dataset - Classified 889 out of 1020 images correctly (87.157%). Epoch loss: 0.500
+Epoch number 991
+Time elapsed: 25720.63 seconds
+Training dataset - Classified 888 out of 1020 images correctly (87.059%). Epoch loss: 0.471
+Epoch number 992
+Time elapsed: 25744.75 seconds
+Training dataset - Classified 867 out of 1020 images correctly (85.000%). Epoch loss: 0.579
+Epoch number 993
+Time elapsed: 25769.77 seconds
+Training dataset - Classified 859 out of 1020 images correctly (84.216%). Epoch loss: 0.584
+Epoch number 994
+Time elapsed: 25793.74 seconds
+Training dataset - Classified 886 out of 1020 images correctly (86.863%). Epoch loss: 0.498
+Epoch number 995
+Time elapsed: 25817.88 seconds
+Training dataset - Classified 854 out of 1020 images correctly (83.725%). Epoch loss: 0.588
+Epoch number 996
+Time elapsed: 25842.44 seconds
+Training dataset - Classified 877 out of 1020 images correctly (85.980%). Epoch loss: 0.574
+Epoch number 997
+Time elapsed: 25865.85 seconds
+Training dataset - Classified 863 out of 1020 images correctly (84.608%). Epoch loss: 0.574
+Epoch number 998
+Time elapsed: 25889.19 seconds
+Training dataset - Classified 873 out of 1020 images correctly (85.588%). Epoch loss: 0.548
+Epoch number 999
+Time elapsed: 25913.55 seconds
+Training dataset - Classified 837 out of 1020 images correctly (82.059%). Epoch loss: 0.623
+Epoch number 1000
+Time elapsed: 25937.34 seconds
+Training dataset - Classified 860 out of 1020 images correctly (84.314%). Epoch loss: 0.576
+Epoch number 1001
+Time elapsed: 25961.75 seconds
+Training dataset - Classified 871 out of 1020 images correctly (85.392%). Epoch loss: 0.565
+Epoch number 1002
+Time elapsed: 25985.93 seconds
+Training dataset - Classified 881 out of 1020 images correctly (86.373%). Epoch loss: 0.510
+Epoch number 1003
+Time elapsed: 26011.01 seconds
+Training dataset - Classified 886 out of 1020 images correctly (86.863%). Epoch loss: 0.536
+Epoch number 1004
+Time elapsed: 26034.67 seconds
+Training dataset - Classified 856 out of 1020 images correctly (83.922%). Epoch loss: 0.604
+Epoch number 1005
+Time elapsed: 26058.98 seconds
+Training dataset - Classified 904 out of 1020 images correctly (88.627%). Epoch loss: 0.464
+Epoch number 1006
+Time elapsed: 26082.84 seconds
+Training dataset - Classified 846 out of 1020 images correctly (82.941%). Epoch loss: 0.624
+Epoch number 1007
+Time elapsed: 26106.54 seconds
+Training dataset - Classified 869 out of 1020 images correctly (85.196%). Epoch loss: 0.521
+Epoch number 1008
+Time elapsed: 26130.63 seconds
+Training dataset - Classified 862 out of 1020 images correctly (84.510%). Epoch loss: 0.602
+Epoch number 1009
+Time elapsed: 26155.16 seconds
+Training dataset - Classified 876 out of 1020 images correctly (85.882%). Epoch loss: 0.550
+Epoch number 1010
+Time elapsed: 26179.77 seconds
+Training dataset - Classified 858 out of 1020 images correctly (84.118%). Epoch loss: 0.594
+Epoch number 1011
+Time elapsed: 26204.90 seconds
+Training dataset - Classified 876 out of 1020 images correctly (85.882%). Epoch loss: 0.552
+Epoch number 1012
+Time elapsed: 26228.60 seconds
+Training dataset - Classified 873 out of 1020 images correctly (85.588%). Epoch loss: 0.565
+Epoch number 1013
+Time elapsed: 26253.15 seconds
+Training dataset - Classified 902 out of 1020 images correctly (88.431%). Epoch loss: 0.442
+Epoch number 1014
+Time elapsed: 26277.18 seconds
+Training dataset - Classified 882 out of 1020 images correctly (86.471%). Epoch loss: 0.523
+Epoch number 1015
+Time elapsed: 26301.05 seconds
+Training dataset - Classified 877 out of 1020 images correctly (85.980%). Epoch loss: 0.538
+Epoch number 1016
+Time elapsed: 26323.82 seconds
+Training dataset - Classified 874 out of 1020 images correctly (85.686%). Epoch loss: 0.534
+Epoch number 1017
+Time elapsed: 26348.15 seconds
+Training dataset - Classified 894 out of 1020 images correctly (87.647%). Epoch loss: 0.504
+Epoch number 1018
+Time elapsed: 26372.16 seconds
+Training dataset - Classified 869 out of 1020 images correctly (85.196%). Epoch loss: 0.573
+Epoch number 1019
+Time elapsed: 26395.80 seconds
+Training dataset - Classified 856 out of 1020 images correctly (83.922%). Epoch loss: 0.594
+Epoch number 1020
+Time elapsed: 26419.49 seconds
+Training dataset - Classified 875 out of 1020 images correctly (85.784%). Epoch loss: 0.553
+Epoch number 1021
+Time elapsed: 26444.33 seconds
+Training dataset - Classified 874 out of 1020 images correctly (85.686%). Epoch loss: 0.514
+Epoch number 1022
+Time elapsed: 26468.21 seconds
+Training dataset - Classified 884 out of 1020 images correctly (86.667%). Epoch loss: 0.506
+Epoch number 1023
+Time elapsed: 26492.22 seconds
+Training dataset - Classified 889 out of 1020 images correctly (87.157%). Epoch loss: 0.515
+Epoch number 1024
+Time elapsed: 26515.78 seconds
+Training dataset - Classified 879 out of 1020 images correctly (86.176%). Epoch loss: 0.549
+Epoch number 1025
+Time elapsed: 26539.29 seconds
+Training dataset - Classified 874 out of 1020 images correctly (85.686%). Epoch loss: 0.566
+Epoch number 1026
+Time elapsed: 26563.53 seconds
+Training dataset - Classified 866 out of 1020 images correctly (84.902%). Epoch loss: 0.577
+Epoch number 1027
+Time elapsed: 26586.16 seconds
+Training dataset - Classified 878 out of 1020 images correctly (86.078%). Epoch loss: 0.562
+Epoch number 1028
+Time elapsed: 26610.01 seconds
+Training dataset - Classified 894 out of 1020 images correctly (87.647%). Epoch loss: 0.482
+Epoch number 1029
+Time elapsed: 26633.95 seconds
+Training dataset - Classified 881 out of 1020 images correctly (86.373%). Epoch loss: 0.525
+Epoch number 1030
+Time elapsed: 26658.34 seconds
+Training dataset - Classified 857 out of 1020 images correctly (84.020%). Epoch loss: 0.566
+Epoch number 1031
+Time elapsed: 26683.57 seconds
+Training dataset - Classified 887 out of 1020 images correctly (86.961%). Epoch loss: 0.520
+Epoch number 1032
+Time elapsed: 26707.68 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.493
+Epoch number 1033
+Time elapsed: 26731.66 seconds
+Training dataset - Classified 881 out of 1020 images correctly (86.373%). Epoch loss: 0.551
+Epoch number 1034
+Time elapsed: 26754.62 seconds
+Training dataset - Classified 870 out of 1020 images correctly (85.294%). Epoch loss: 0.548
+Epoch number 1035
+Time elapsed: 26774.88 seconds
+Training dataset - Classified 867 out of 1020 images correctly (85.000%). Epoch loss: 0.562
+Epoch number 1036
+Time elapsed: 26795.97 seconds
+Training dataset - Classified 861 out of 1020 images correctly (84.412%). Epoch loss: 0.593
+Epoch number 1037
+Time elapsed: 26816.08 seconds
+Training dataset - Classified 883 out of 1020 images correctly (86.569%). Epoch loss: 0.503
+Epoch number 1038
+Time elapsed: 26835.93 seconds
+Training dataset - Classified 874 out of 1020 images correctly (85.686%). Epoch loss: 0.539
+Epoch number 1039
+Time elapsed: 26857.37 seconds
+Training dataset - Classified 881 out of 1020 images correctly (86.373%). Epoch loss: 0.530
+Epoch number 1040
+Time elapsed: 26879.15 seconds
+Training dataset - Classified 889 out of 1020 images correctly (87.157%). Epoch loss: 0.494
+Epoch number 1041
+Time elapsed: 26900.19 seconds
+Training dataset - Classified 888 out of 1020 images correctly (87.059%). Epoch loss: 0.471
+Epoch number 1042
+Time elapsed: 26921.71 seconds
+Training dataset - Classified 873 out of 1020 images correctly (85.588%). Epoch loss: 0.538
+Epoch number 1043
+Time elapsed: 26943.19 seconds
+Training dataset - Classified 866 out of 1020 images correctly (84.902%). Epoch loss: 0.553
+Epoch number 1044
+Time elapsed: 26964.56 seconds
+Training dataset - Classified 871 out of 1020 images correctly (85.392%). Epoch loss: 0.537
+Epoch number 1045
+Time elapsed: 26985.13 seconds
+Training dataset - Classified 886 out of 1020 images correctly (86.863%). Epoch loss: 0.546
+Epoch number 1046
+Time elapsed: 27006.38 seconds
+Training dataset - Classified 893 out of 1020 images correctly (87.549%). Epoch loss: 0.495
+Epoch number 1047
+Time elapsed: 27027.16 seconds
+Training dataset - Classified 876 out of 1020 images correctly (85.882%). Epoch loss: 0.538
+Epoch number 1048
+Time elapsed: 27047.99 seconds
+Training dataset - Classified 865 out of 1020 images correctly (84.804%). Epoch loss: 0.563
+Epoch number 1049
+Time elapsed: 27068.74 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.493
+Epoch number 1050
+Time elapsed: 27089.74 seconds
+Training dataset - Classified 878 out of 1020 images correctly (86.078%). Epoch loss: 0.515
+Epoch number 1051
+Time elapsed: 27110.42 seconds
+Training dataset - Classified 887 out of 1020 images correctly (86.961%). Epoch loss: 0.514
+Epoch number 1052
+Time elapsed: 27131.52 seconds
+Training dataset - Classified 864 out of 1020 images correctly (84.706%). Epoch loss: 0.543
+Epoch number 1053
+Time elapsed: 27152.91 seconds
+Training dataset - Classified 890 out of 1020 images correctly (87.255%). Epoch loss: 0.512
+Epoch number 1054
+Time elapsed: 27173.35 seconds
+Training dataset - Classified 904 out of 1020 images correctly (88.627%). Epoch loss: 0.462
+Epoch number 1055
+Time elapsed: 27194.03 seconds
+Training dataset - Classified 889 out of 1020 images correctly (87.157%). Epoch loss: 0.495
+Epoch number 1056
+Time elapsed: 27218.72 seconds
+Training dataset - Classified 867 out of 1020 images correctly (85.000%). Epoch loss: 0.585
+Epoch number 1057
+Time elapsed: 27243.03 seconds
+Training dataset - Classified 891 out of 1020 images correctly (87.353%). Epoch loss: 0.491
+Epoch number 1058
+Time elapsed: 27266.94 seconds
+Training dataset - Classified 891 out of 1020 images correctly (87.353%). Epoch loss: 0.512
+Epoch number 1059
+Time elapsed: 27290.88 seconds
+Training dataset - Classified 888 out of 1020 images correctly (87.059%). Epoch loss: 0.470
+Epoch number 1060
+Time elapsed: 27314.28 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.575
+Epoch number 1061
+Time elapsed: 27338.50 seconds
+Training dataset - Classified 871 out of 1020 images correctly (85.392%). Epoch loss: 0.560
+Epoch number 1062
+Time elapsed: 27362.83 seconds
+Training dataset - Classified 879 out of 1020 images correctly (86.176%). Epoch loss: 0.515
+Epoch number 1063
+Time elapsed: 27386.53 seconds
+Training dataset - Classified 886 out of 1020 images correctly (86.863%). Epoch loss: 0.521
+Epoch number 1064
+Time elapsed: 27409.89 seconds
+Training dataset - Classified 889 out of 1020 images correctly (87.157%). Epoch loss: 0.502
+Epoch number 1065
+Time elapsed: 27433.31 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.535
+Epoch number 1066
+Time elapsed: 27456.32 seconds
+Training dataset - Classified 866 out of 1020 images correctly (84.902%). Epoch loss: 0.523
+Epoch number 1067
+Time elapsed: 27477.48 seconds
+Training dataset - Classified 867 out of 1020 images correctly (85.000%). Epoch loss: 0.577
+Epoch number 1068
+Time elapsed: 27499.75 seconds
+Training dataset - Classified 872 out of 1020 images correctly (85.490%). Epoch loss: 0.538
+Epoch number 1069
+Time elapsed: 27521.99 seconds
+Training dataset - Classified 888 out of 1020 images correctly (87.059%). Epoch loss: 0.489
+Epoch number 1070
+Time elapsed: 27544.06 seconds
+Training dataset - Classified 861 out of 1020 images correctly (84.412%). Epoch loss: 0.605
+Epoch number 1071
+Time elapsed: 27566.95 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.512
+Epoch number 1072
+Time elapsed: 27589.70 seconds
+Training dataset - Classified 859 out of 1020 images correctly (84.216%). Epoch loss: 0.572
+Epoch number 1073
+Time elapsed: 27611.97 seconds
+Training dataset - Classified 891 out of 1020 images correctly (87.353%). Epoch loss: 0.490
+Epoch number 1074
+Time elapsed: 27634.56 seconds
+Training dataset - Classified 876 out of 1020 images correctly (85.882%). Epoch loss: 0.585
+Epoch number 1075
+Time elapsed: 27657.76 seconds
+Training dataset - Classified 882 out of 1020 images correctly (86.471%). Epoch loss: 0.528
+Epoch number 1076
+Time elapsed: 27679.96 seconds
+Training dataset - Classified 856 out of 1020 images correctly (83.922%). Epoch loss: 0.588
+Epoch number 1077
+Time elapsed: 27702.70 seconds
+Training dataset - Classified 904 out of 1020 images correctly (88.627%). Epoch loss: 0.468
+Epoch number 1078
+Time elapsed: 27726.17 seconds
+Training dataset - Classified 884 out of 1020 images correctly (86.667%). Epoch loss: 0.506
+Epoch number 1079
+Time elapsed: 27748.78 seconds
+Training dataset - Classified 879 out of 1020 images correctly (86.176%). Epoch loss: 0.542
+Epoch number 1080
+Time elapsed: 27772.30 seconds
+Training dataset - Classified 903 out of 1020 images correctly (88.529%). Epoch loss: 0.458
+Epoch number 1081
+Time elapsed: 27795.73 seconds
+Training dataset - Classified 882 out of 1020 images correctly (86.471%). Epoch loss: 0.505
+Epoch number 1082
+Time elapsed: 27820.10 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.526
+Epoch number 1083
+Time elapsed: 27843.47 seconds
+Training dataset - Classified 891 out of 1020 images correctly (87.353%). Epoch loss: 0.511
+Epoch number 1084
+Time elapsed: 27866.89 seconds
+Training dataset - Classified 880 out of 1020 images correctly (86.275%). Epoch loss: 0.556
+Epoch number 1085
+Time elapsed: 27890.71 seconds
+Training dataset - Classified 872 out of 1020 images correctly (85.490%). Epoch loss: 0.547
+Epoch number 1086
+Time elapsed: 27913.98 seconds
+Training dataset - Classified 879 out of 1020 images correctly (86.176%). Epoch loss: 0.535
+Epoch number 1087
+Time elapsed: 27937.21 seconds
+Training dataset - Classified 895 out of 1020 images correctly (87.745%). Epoch loss: 0.471
+Epoch number 1088
+Time elapsed: 27961.33 seconds
+Training dataset - Classified 881 out of 1020 images correctly (86.373%). Epoch loss: 0.524
+Epoch number 1089
+Time elapsed: 27985.02 seconds
+Training dataset - Classified 874 out of 1020 images correctly (85.686%). Epoch loss: 0.512
+Epoch number 1090
+Time elapsed: 28008.94 seconds
+Training dataset - Classified 863 out of 1020 images correctly (84.608%). Epoch loss: 0.537
+Epoch number 1091
+Time elapsed: 28031.78 seconds
+Training dataset - Classified 880 out of 1020 images correctly (86.275%). Epoch loss: 0.541
+Epoch number 1092
+Time elapsed: 28056.37 seconds
+Training dataset - Classified 867 out of 1020 images correctly (85.000%). Epoch loss: 0.568
+Epoch number 1093
+Time elapsed: 28080.52 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.533
+Epoch number 1094
+Time elapsed: 28103.53 seconds
+Training dataset - Classified 887 out of 1020 images correctly (86.961%). Epoch loss: 0.538
+Epoch number 1095
+Time elapsed: 28127.84 seconds
+Training dataset - Classified 876 out of 1020 images correctly (85.882%). Epoch loss: 0.527
+Epoch number 1096
+Time elapsed: 28152.11 seconds
+Training dataset - Classified 875 out of 1020 images correctly (85.784%). Epoch loss: 0.558
+Epoch number 1097
+Time elapsed: 28176.50 seconds
+Training dataset - Classified 875 out of 1020 images correctly (85.784%). Epoch loss: 0.536
+Epoch number 1098
+Time elapsed: 28200.01 seconds
+Training dataset - Classified 887 out of 1020 images correctly (86.961%). Epoch loss: 0.470
+Epoch number 1099
+Time elapsed: 28223.98 seconds
+Training dataset - Classified 892 out of 1020 images correctly (87.451%). Epoch loss: 0.473
+Epoch number 1100
+Time elapsed: 28247.57 seconds
+Training dataset - Classified 909 out of 1020 images correctly (89.118%). Epoch loss: 0.440
+Epoch number 1101
+Time elapsed: 28270.52 seconds
+Training dataset - Classified 901 out of 1020 images correctly (88.333%). Epoch loss: 0.433
+Epoch number 1102
+Time elapsed: 28293.95 seconds
+Training dataset - Classified 898 out of 1020 images correctly (88.039%). Epoch loss: 0.504
+Validation dataset - Classified 733 out of 1020 images correctly (71.863%)
+Validation accuracy improved from 0.000% to 71.863%. Saving the model.
+Epoch number 1103
+Time elapsed: 28330.72 seconds
+Training dataset - Classified 864 out of 1020 images correctly (84.706%). Epoch loss: 0.585
+Validation dataset - Classified 718 out of 1020 images correctly (70.392%)
+Epoch number 1104
+Time elapsed: 28368.46 seconds
+Training dataset - Classified 905 out of 1020 images correctly (88.725%). Epoch loss: 0.433
+Validation dataset - Classified 742 out of 1020 images correctly (72.745%)
+Validation accuracy improved from 71.863% to 72.745%. Saving the model.
+Epoch number 1105
+Time elapsed: 28405.88 seconds
+Training dataset - Classified 878 out of 1020 images correctly (86.078%). Epoch loss: 0.559
+Validation dataset - Classified 723 out of 1020 images correctly (70.882%)
+Epoch number 1106
+Time elapsed: 28444.00 seconds
+Training dataset - Classified 891 out of 1020 images correctly (87.353%). Epoch loss: 0.499
+Validation dataset - Classified 727 out of 1020 images correctly (71.275%)
+Epoch number 1107
+Time elapsed: 28481.33 seconds
+Training dataset - Classified 872 out of 1020 images correctly (85.490%). Epoch loss: 0.534
+Validation dataset - Classified 730 out of 1020 images correctly (71.569%)
+Epoch number 1108
+Time elapsed: 28517.72 seconds
+Training dataset - Classified 890 out of 1020 images correctly (87.255%). Epoch loss: 0.532
+Validation dataset - Classified 721 out of 1020 images correctly (70.686%)
+Epoch number 1109
+Time elapsed: 28558.67 seconds
+Training dataset - Classified 883 out of 1020 images correctly (86.569%). Epoch loss: 0.527
+Validation dataset - Classified 717 out of 1020 images correctly (70.294%)
+Epoch number 1110
+Time elapsed: 28595.57 seconds
+Training dataset - Classified 868 out of 1020 images correctly (85.098%). Epoch loss: 0.536
+Validation dataset - Classified 716 out of 1020 images correctly (70.196%)
+Epoch number 1111
+Time elapsed: 28627.81 seconds
+Training dataset - Classified 901 out of 1020 images correctly (88.333%). Epoch loss: 0.470
+Validation dataset - Classified 754 out of 1020 images correctly (73.922%)
+Validation accuracy improved from 72.745% to 73.922%. Saving the model.
+Epoch number 1112
+Time elapsed: 28661.28 seconds
+Training dataset - Classified 883 out of 1020 images correctly (86.569%). Epoch loss: 0.552
+Validation dataset - Classified 726 out of 1020 images correctly (71.176%)
+Epoch number 1113
+Time elapsed: 28691.35 seconds
+Training dataset - Classified 891 out of 1020 images correctly (87.353%). Epoch loss: 0.468
+Validation dataset - Classified 739 out of 1020 images correctly (72.451%)
+Epoch number 1114
+Time elapsed: 28723.02 seconds
+Training dataset - Classified 902 out of 1020 images correctly (88.431%). Epoch loss: 0.483
+Validation dataset - Classified 722 out of 1020 images correctly (70.784%)
+Epoch number 1115
+Time elapsed: 28753.84 seconds
+Training dataset - Classified 893 out of 1020 images correctly (87.549%). Epoch loss: 0.470
+Validation dataset - Classified 736 out of 1020 images correctly (72.157%)
+Epoch number 1116
+Time elapsed: 28785.97 seconds
+Training dataset - Classified 876 out of 1020 images correctly (85.882%). Epoch loss: 0.546
+Validation dataset - Classified 741 out of 1020 images correctly (72.647%)
+Epoch number 1117
+Time elapsed: 28813.05 seconds
+Training dataset - Classified 871 out of 1020 images correctly (85.392%). Epoch loss: 0.565
+Validation dataset - Classified 731 out of 1020 images correctly (71.667%)
+Epoch number 1118
+Time elapsed: 28836.91 seconds
+Training dataset - Classified 925 out of 1020 images correctly (90.686%). Epoch loss: 0.388
+Validation dataset - Classified 741 out of 1020 images correctly (72.647%)
+Epoch number 1119
+Time elapsed: 28860.32 seconds
+Training dataset - Classified 878 out of 1020 images correctly (86.078%). Epoch loss: 0.512
+Validation dataset - Classified 742 out of 1020 images correctly (72.745%)
+Epoch number 1120
+Time elapsed: 28883.50 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.510
+Validation dataset - Classified 735 out of 1020 images correctly (72.059%)
+Epoch number 1121
+Time elapsed: 28906.79 seconds
+Training dataset - Classified 875 out of 1020 images correctly (85.784%). Epoch loss: 0.515
+Validation dataset - Classified 729 out of 1020 images correctly (71.471%)
+Epoch number 1122
+Time elapsed: 28930.21 seconds
+Training dataset - Classified 899 out of 1020 images correctly (88.137%). Epoch loss: 0.483
+Validation dataset - Classified 735 out of 1020 images correctly (72.059%)
+Epoch number 1123
+Time elapsed: 28953.66 seconds
+Training dataset - Classified 890 out of 1020 images correctly (87.255%). Epoch loss: 0.508
+Validation dataset - Classified 741 out of 1020 images correctly (72.647%)
+Epoch number 1124
+Time elapsed: 28976.97 seconds
+Training dataset - Classified 879 out of 1020 images correctly (86.176%). Epoch loss: 0.552
+Validation dataset - Classified 736 out of 1020 images correctly (72.157%)
+Epoch number 1125
+Time elapsed: 29000.32 seconds
+Training dataset - Classified 909 out of 1020 images correctly (89.118%). Epoch loss: 0.454
+Validation dataset - Classified 732 out of 1020 images correctly (71.765%)
+Epoch number 1126
+Time elapsed: 29024.07 seconds
+Training dataset - Classified 872 out of 1020 images correctly (85.490%). Epoch loss: 0.489
+Validation dataset - Classified 724 out of 1020 images correctly (70.980%)
+Epoch number 1127
+Time elapsed: 29047.69 seconds
+Training dataset - Classified 888 out of 1020 images correctly (87.059%). Epoch loss: 0.485
+Validation dataset - Classified 732 out of 1020 images correctly (71.765%)
+Epoch number 1128
+Time elapsed: 29071.75 seconds
+Training dataset - Classified 876 out of 1020 images correctly (85.882%). Epoch loss: 0.524
+Validation dataset - Classified 735 out of 1020 images correctly (72.059%)
+Epoch number 1129
+Time elapsed: 29095.21 seconds
+Training dataset - Classified 880 out of 1020 images correctly (86.275%). Epoch loss: 0.495
+Validation dataset - Classified 741 out of 1020 images correctly (72.647%)
+Epoch number 1130
+Time elapsed: 29118.99 seconds
+Training dataset - Classified 873 out of 1020 images correctly (85.588%). Epoch loss: 0.519
+Validation dataset - Classified 721 out of 1020 images correctly (70.686%)
+Epoch number 1131
+Time elapsed: 29143.14 seconds
+Training dataset - Classified 876 out of 1020 images correctly (85.882%). Epoch loss: 0.552
+Validation dataset - Classified 735 out of 1020 images correctly (72.059%)
+Epoch number 1132
+Time elapsed: 29166.95 seconds
+Training dataset - Classified 902 out of 1020 images correctly (88.431%). Epoch loss: 0.450
+Validation dataset - Classified 736 out of 1020 images correctly (72.157%)
+Epoch number 1133
+Time elapsed: 29190.71 seconds
+Training dataset - Classified 872 out of 1020 images correctly (85.490%). Epoch loss: 0.500
+Validation dataset - Classified 743 out of 1020 images correctly (72.843%)
+Epoch number 1134
+Time elapsed: 29214.07 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.473
+Validation dataset - Classified 725 out of 1020 images correctly (71.078%)
+Epoch number 1135
+Time elapsed: 29237.31 seconds
+Training dataset - Classified 904 out of 1020 images correctly (88.627%). Epoch loss: 0.438
+Validation dataset - Classified 738 out of 1020 images correctly (72.353%)
+Epoch number 1136
+Time elapsed: 29260.64 seconds
+Training dataset - Classified 898 out of 1020 images correctly (88.039%). Epoch loss: 0.495
+Validation dataset - Classified 740 out of 1020 images correctly (72.549%)
+Epoch number 1137
+Time elapsed: 29283.87 seconds
+Training dataset - Classified 874 out of 1020 images correctly (85.686%). Epoch loss: 0.523
+Validation dataset - Classified 725 out of 1020 images correctly (71.078%)
+Epoch number 1138
+Time elapsed: 29306.40 seconds
+Training dataset - Classified 862 out of 1020 images correctly (84.510%). Epoch loss: 0.575
+Validation dataset - Classified 741 out of 1020 images correctly (72.647%)
+Epoch number 1139
+Time elapsed: 29329.58 seconds
+Training dataset - Classified 881 out of 1020 images correctly (86.373%). Epoch loss: 0.547
+Validation dataset - Classified 742 out of 1020 images correctly (72.745%)
+Epoch number 1140
+Time elapsed: 29353.35 seconds
+Training dataset - Classified 882 out of 1020 images correctly (86.471%). Epoch loss: 0.517
+Validation dataset - Classified 724 out of 1020 images correctly (70.980%)
+Epoch number 1141
+Time elapsed: 29376.98 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.499
+Validation dataset - Classified 737 out of 1020 images correctly (72.255%)
+Epoch number 1142
+Time elapsed: 29400.07 seconds
+Training dataset - Classified 882 out of 1020 images correctly (86.471%). Epoch loss: 0.492
+Validation dataset - Classified 726 out of 1020 images correctly (71.176%)
+Epoch number 1143
+Time elapsed: 29423.38 seconds
+Training dataset - Classified 872 out of 1020 images correctly (85.490%). Epoch loss: 0.548
+Validation dataset - Classified 736 out of 1020 images correctly (72.157%)
+Epoch number 1144
+Time elapsed: 29447.11 seconds
+Training dataset - Classified 893 out of 1020 images correctly (87.549%). Epoch loss: 0.485
+Validation dataset - Classified 735 out of 1020 images correctly (72.059%)
+Epoch number 1145
+Time elapsed: 29471.13 seconds
+Training dataset - Classified 884 out of 1020 images correctly (86.667%). Epoch loss: 0.516
+Validation dataset - Classified 726 out of 1020 images correctly (71.176%)
+Epoch number 1146
+Time elapsed: 29494.62 seconds
+Training dataset - Classified 885 out of 1020 images correctly (86.765%). Epoch loss: 0.481
+Validation dataset - Classified 731 out of 1020 images correctly (71.667%)
+Epoch number 1147
+Time elapsed: 29518.41 seconds
+Training dataset - Classified 887 out of 1020 images correctly (86.961%). Epoch loss: 0.505
+Validation dataset - Classified 742 out of 1020 images correctly (72.745%)
+Epoch number 1148
+Time elapsed: 29540.72 seconds
+Training dataset - Classified 889 out of 1020 images correctly (87.157%). Epoch loss: 0.465
+Validation dataset - Classified 732 out of 1020 images correctly (71.765%)
+Epoch number 1149
+Time elapsed: 29562.82 seconds
+Training dataset - Classified 898 out of 1020 images correctly (88.039%). Epoch loss: 0.470
+Validation dataset - Classified 740 out of 1020 images correctly (72.549%)
+Epoch number 1150
+Time elapsed: 29586.05 seconds
+Training dataset - Classified 894 out of 1020 images correctly (87.647%). Epoch loss: 0.472
+Validation dataset - Classified 733 out of 1020 images correctly (71.863%)
+Epoch number 1151
+Time elapsed: 29609.76 seconds
+Training dataset - Classified 913 out of 1020 images correctly (89.510%). Epoch loss: 0.420
+Validation dataset - Classified 741 out of 1020 images correctly (72.647%)
+Epoch number 1152
+Time elapsed: 29632.71 seconds
+Training dataset - Classified 884 out of 1020 images correctly (86.667%). Epoch loss: 0.476
+Validation dataset - Classified 747 out of 1020 images correctly (73.235%)
+Epoch number 1153
+Time elapsed: 29656.00 seconds
+Training dataset - Classified 881 out of 1020 images correctly (86.373%). Epoch loss: 0.527
+Validation dataset - Classified 737 out of 1020 images correctly (72.255%)
+Epoch number 1154
+Time elapsed: 29679.38 seconds
+Training dataset - Classified 881 out of 1020 images correctly (86.373%). Epoch loss: 0.501
+Validation dataset - Classified 749 out of 1020 images correctly (73.431%)
+Epoch number 1155
+Time elapsed: 29701.92 seconds
+Training dataset - Classified 874 out of 1020 images correctly (85.686%). Epoch loss: 0.532
+Validation dataset - Classified 710 out of 1020 images correctly (69.608%)
+Epoch number 1156
+Time elapsed: 29725.52 seconds
+Training dataset - Classified 894 out of 1020 images correctly (87.647%). Epoch loss: 0.489
+Validation dataset - Classified 729 out of 1020 images correctly (71.471%)
+Epoch number 1157
+Time elapsed: 29748.51 seconds
+Training dataset - Classified 901 out of 1020 images correctly (88.333%). Epoch loss: 0.486
+Validation dataset - Classified 738 out of 1020 images correctly (72.353%)
+Epoch number 1158
+Time elapsed: 29771.48 seconds
+Training dataset - Classified 897 out of 1020 images correctly (87.941%). Epoch loss: 0.463
+Validation dataset - Classified 728 out of 1020 images correctly (71.373%)
+Epoch number 1159
+Time elapsed: 29795.03 seconds
+Training dataset - Classified 891 out of 1020 images correctly (87.353%). Epoch loss: 0.475
+Validation dataset - Classified 744 out of 1020 images correctly (72.941%)
+Epoch number 1160
+Time elapsed: 29818.70 seconds
+Training dataset - Classified 923 out of 1020 images correctly (90.490%). Epoch loss: 0.361
+Validation dataset - Classified 732 out of 1020 images correctly (71.765%)
+Epoch number 1161
+Time elapsed: 29842.08 seconds
+Training dataset - Classified 896 out of 1020 images correctly (87.843%). Epoch loss: 0.465
+Validation dataset - Classified 735 out of 1020 images correctly (72.059%)
+Epoch number 1162
+Time elapsed: 29865.63 seconds
+Training dataset - Classified 889 out of 1020 images correctly (87.157%). Epoch loss: 0.477
+Validation dataset - Classified 739 out of 1020 images correctly (72.451%)
+Epoch number 1163
+Time elapsed: 29889.31 seconds
+Training dataset - Classified 901 out of 1020 images correctly (88.333%). Epoch loss: 0.449
+Validation dataset - Classified 736 out of 1020 images correctly (72.157%)
+Epoch number 1164
+Time elapsed: 29913.61 seconds
+Training dataset - Classified 889 out of 1020 images correctly (87.157%). Epoch loss: 0.481
+Validation dataset - Classified 737 out of 1020 images correctly (72.255%)
+Epoch number 1165
+Time elapsed: 29937.52 seconds
+Training dataset - Classified 882 out of 1020 images correctly (86.471%). Epoch loss: 0.483
+Validation dataset - Classified 734 out of 1020 images correctly (71.961%)
+Epoch number 1166
+Time elapsed: 29961.08 seconds
+Training dataset - Classified 869 out of 1020 images correctly (85.196%). Epoch loss: 0.544
+Validation dataset - Classified 722 out of 1020 images correctly (70.784%)
+Epoch number 1167
+Time elapsed: 29985.74 seconds
+Training dataset - Classified 887 out of 1020 images correctly (86.961%). Epoch loss: 0.468
+Validation dataset - Classified 721 out of 1020 images correctly (70.686%)
+Epoch number 1168
+Time elapsed: 30009.55 seconds
+Training dataset - Classified 865 out of 1020 images correctly (84.804%). Epoch loss: 0.517
+Validation dataset - Classified 734 out of 1020 images correctly (71.961%)
+Epoch number 1169
+Time elapsed: 30032.38 seconds
+Training dataset - Classified 871 out of 1020 images correctly (85.392%). Epoch loss: 0.560
+Validation dataset - Classified 736 out of 1020 images correctly (72.157%)
+Epoch number 1170
+Time elapsed: 30055.71 seconds
+Training dataset - Classified 897 out of 1020 images correctly (87.941%). Epoch loss: 0.469
+Validation dataset - Classified 757 out of 1020 images correctly (74.216%)
+Validation accuracy improved from 73.922% to 74.216%. Saving the model.
+Epoch number 1171
+Time elapsed: 30077.81 seconds
+Training dataset - Classified 880 out of 1020 images correctly (86.275%). Epoch loss: 0.500
+Validation dataset - Classified 736 out of 1020 images correctly (72.157%)
+Epoch number 1172
+Time elapsed: 30100.96 seconds
+Training dataset - Classified 880 out of 1020 images correctly (86.275%). Epoch loss: 0.487
+Validation dataset - Classified 747 out of 1020 images correctly (73.235%)
+Epoch number 1173
+Time elapsed: 30124.94 seconds
+Training dataset - Classified 878 out of 1020 images correctly (86.078%). Epoch loss: 0.520
+Validation dataset - Classified 729 out of 1020 images correctly (71.471%)
+Epoch number 1174
+Time elapsed: 30148.43 seconds
+Training dataset - Classified 874 out of 1020 images correctly (85.686%). Epoch loss: 0.476
+Validation dataset - Classified 734 out of 1020 images correctly (71.961%)
+Epoch number 1175
+Time elapsed: 30171.49 seconds
+Training dataset - Classified 888 out of 1020 images correctly (87.059%). Epoch loss: 0.530
+Validation dataset - Classified 738 out of 1020 images correctly (72.353%)
+Epoch number 1176
+Time elapsed: 30195.04 seconds
+Training dataset - Classified 882 out of 1020 images correctly (86.471%). Epoch loss: 0.511
+Validation dataset - Classified 745 out of 1020 images correctly (73.039%)
+Epoch number 1177
+Time elapsed: 30218.57 seconds
+Training dataset - Classified 888 out of 1020 images correctly (87.059%). Epoch loss: 0.461
+Validation dataset - Classified 743 out of 1020 images correctly (72.843%)
+Epoch number 1178
+Time elapsed: 30242.36 seconds
+Training dataset - Classified 922 out of 1020 images correctly (90.392%). Epoch loss: 0.385
+Validation dataset - Classified 733 out of 1020 images correctly (71.863%)
+Epoch number 1179
+Time elapsed: 30265.59 seconds
+Training dataset - Classified 898 out of 1020 images correctly (88.039%). Epoch loss: 0.460
+Validation dataset - Classified 728 out of 1020 images correctly (71.373%)
+Epoch number 1180
+Time elapsed: 30288.49 seconds
+Training dataset - Classified 901 out of 1020 images correctly (88.333%). Epoch loss: 0.425
+Validation dataset - Classified 740 out of 1020 images correctly (72.549%)
+Epoch number 1181
+Time elapsed: 30311.70 seconds
+Training dataset - Classified 889 out of 1020 images correctly (87.157%). Epoch loss: 0.477
+Validation dataset - Classified 727 out of 1020 images correctly (71.275%)
+Epoch number 1182
+Time elapsed: 30334.37 seconds
+Training dataset - Classified 886 out of 1020 images correctly (86.863%). Epoch loss: 0.519
+Validation dataset - Classified 732 out of 1020 images correctly (71.765%)
+Epoch number 1183
+Time elapsed: 30356.70 seconds
+Training dataset - Classified 905 out of 1020 images correctly (88.725%). Epoch loss: 0.434
+Validation dataset - Classified 739 out of 1020 images correctly (72.451%)
+Epoch number 1184
+Time elapsed: 30379.09 seconds
+Training dataset - Classified 884 out of 1020 images correctly (86.667%). Epoch loss: 0.518
+Validation dataset - Classified 734 out of 1020 images correctly (71.961%)
+Epoch number 1185
+Time elapsed: 30401.27 seconds
+Training dataset - Classified 893 out of 1020 images correctly (87.549%). Epoch loss: 0.464
+Validation dataset - Classified 740 out of 1020 images correctly (72.549%)
+Epoch number 1186
+Time elapsed: 30423.93 seconds
+Training dataset - Classified 862 out of 1020 images correctly (84.510%). Epoch loss: 0.525
+Validation dataset - Classified 739 out of 1020 images correctly (72.451%)
+Epoch number 1187
+Time elapsed: 30446.57 seconds
+Training dataset - Classified 892 out of 1020 images correctly (87.451%). Epoch loss: 0.511
+Validation dataset - Classified 757 out of 1020 images correctly (74.216%)
+Epoch number 1188
+Time elapsed: 30470.12 seconds
+Training dataset - Classified 911 out of 1020 images correctly (89.314%). Epoch loss: 0.444
+Validation dataset - Classified 744 out of 1020 images correctly (72.941%)
+Epoch number 1189
+Time elapsed: 30492.98 seconds
+Training dataset - Classified 884 out of 1020 images correctly (86.667%). Epoch loss: 0.515
+Validation dataset - Classified 729 out of 1020 images correctly (71.471%)
+Epoch number 1190
+Time elapsed: 30515.78 seconds
+Training dataset - Classified 896 out of 1020 images correctly (87.843%). Epoch loss: 0.507
+Validation dataset - Classified 747 out of 1020 images correctly (73.235%)
+Epoch number 1191
+Time elapsed: 30538.82 seconds
+Training dataset - Classified 892 out of 1020 images correctly (87.451%). Epoch loss: 0.465
+Validation dataset - Classified 764 out of 1020 images correctly (74.902%)
+Validation accuracy improved from 74.216% to 74.902%. Saving the model.
+Epoch number 1192
+Time elapsed: 30562.66 seconds
+Training dataset - Classified 892 out of 1020 images correctly (87.451%). Epoch loss: 0.479
+Validation dataset - Classified 743 out of 1020 images correctly (72.843%)
+Epoch number 1193
+Time elapsed: 30586.14 seconds
+Training dataset - Classified 907 out of 1020 images correctly (88.922%). Epoch loss: 0.407
+Validation dataset - Classified 757 out of 1020 images correctly (74.216%)
+Epoch number 1194
+Time elapsed: 30609.55 seconds
+Training dataset - Classified 894 out of 1020 images correctly (87.647%). Epoch loss: 0.460
+Validation dataset - Classified 749 out of 1020 images correctly (73.431%)
+Epoch number 1195
+Time elapsed: 30633.01 seconds
+Training dataset - Classified 912 out of 1020 images correctly (89.412%). Epoch loss: 0.407
+Validation dataset - Classified 750 out of 1020 images correctly (73.529%)
+Epoch number 1196
+Time elapsed: 30655.22 seconds
+Training dataset - Classified 895 out of 1020 images correctly (87.745%). Epoch loss: 0.513
+Validation dataset - Classified 725 out of 1020 images correctly (71.078%)
+Epoch number 1197
+Time elapsed: 30678.79 seconds
+Training dataset - Classified 907 out of 1020 images correctly (88.922%). Epoch loss: 0.460
+Validation dataset - Classified 735 out of 1020 images correctly (72.059%)
+Epoch number 1198
+Time elapsed: 30701.93 seconds
+Training dataset - Classified 895 out of 1020 images correctly (87.745%). Epoch loss: 0.468
+Validation dataset - Classified 747 out of 1020 images correctly (73.235%)
+Epoch number 1199
+Time elapsed: 30725.03 seconds
+Training dataset - Classified 874 out of 1020 images correctly (85.686%). Epoch loss: 0.525
+Validation dataset - Classified 731 out of 1020 images correctly (71.667%)
+Epoch number 1200
+Time elapsed: 30748.73 seconds
+Training dataset - Classified 900 out of 1020 images correctly (88.235%). Epoch loss: 0.466
+Validation dataset - Classified 729 out of 1020 images correctly (71.471%)
+Training completed in 30755.79 seconds.
+Test dataset - Classified 4270 out of 6149 images correctly (69.442%)
+(base) ovh@job-769244c4-2a69-463a-b95d-6a97ce53b556:~$
