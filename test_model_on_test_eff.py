@@ -1,16 +1,10 @@
-import torch
-import torch.nn as nn
-import math
 
-from multiprocessing import freeze_support
 import torch
 import torchvision
 import torchvision.transforms as transforms
-import torchvision.models as models
 import torch.nn as nn
-import torch.optim as optim
-import time
-
+from collections import defaultdict
+import math
 
 class Swish(nn.Module):
     def forward(self, x):
@@ -103,67 +97,6 @@ class EfficientNet(nn.Module):
 
 
 
-
-mean = [0.485, 0.456, 0.406]
-std = [0.229, 0.224, 0.225]
-
-data_transforms_train = transforms.Compose([
- transforms.RandomRotation(degrees=(-20, 20)),
-    transforms.RandomHorizontalFlip(p=0.5),
-    transforms.RandomResizedCrop(size=(224, 224)),
-    transforms.RandomApply([
-        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2)
-    ], p=0.5),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
-
-
-data_transforms_test_val = transforms.Compose([
- transforms.Resize((300, 300)),
-    transforms.CenterCrop((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
-
-
-# loading dataset directly from torchvision as suggested in our paper and we split the dataset into train, val, and test
-train_dataset = torchvision.datasets.Flowers102(root='./data', split='train', transform=data_transforms_train,
-                                                download=True)
-val_dataset = torchvision.datasets.Flowers102(root='./data', split='val', transform=data_transforms_test_val,
-                                              download=True)
-test_dataset = torchvision.datasets.Flowers102(root='./data', split='test', transform=data_transforms_test_val,
-                                               download=True)
-
-# Create data loaders to load the data in batches
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=16, shuffle=True)
-val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=16, shuffle=False)
-test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=16, shuffle=False)  # removed num_workers=2
-
-
-# Add a function to validate the model on the validation dataset
-def validate_model(model, val_loader):
-    model.eval()
-    correct = 0
-    total = 0
-    device = set_device()
-
-    with torch.no_grad():
-        for data in val_loader:
-            images, labels = data
-            images = images.to(device)
-            labels = labels.to(device)
-            total += labels.size(0)
-
-            outputs = model(images)
-            _, predicted = torch.max(outputs.data, 1)
-            correct += (predicted == labels).sum().item()
-
-    accuracy = (correct / total) * 100
-    print("Validation dataset - Classified %d out of %d images correctly (%.3f%%)" % (correct, total, accuracy))
-    return accuracy
-
-
 def set_device():
     if torch.cuda.is_available():
         dev = "cuda:0"
@@ -172,99 +105,75 @@ def set_device():
     return torch.device(dev)
 
 
+data_transforms_test_val = transforms.Compose([
+    transforms.Resize((300, 300)),
+    transforms.CenterCrop((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+])
+
+
+
+
 def evaluate_model_on_test_set(model, test_loader):
     model.eval()
     predicted_correctly_on_epoch = 0
     total = 0
     device = set_device()
 
-    with torch.no_grad():  # Speeds up process, does not allow back-prop
+    # Initialize a dictionary to track the number of incorrect predictions per class
+    incorrect_predictions = defaultdict(int)
+
+    with torch.no_grad():
         for data in test_loader:
-            # Specifies batch size incase last batch does not end on even multiple of batch size
-            # (e.g. 29 images in last batch not 32)
             images, labels = data
             images = images.to(device)
             labels = labels.to(device)
             total += labels.size(0)
 
-            outputs = model(images)  # Models classification of the images
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            print("accuracy of this batch in percentage: ", (predicted == labels).sum().item() / labels.size(0) * 100)
 
-            _, predicted = torch.max(outputs.data, 1)  # 1 specifies dimension it is reduced to
+            # Get indices of the incorrect predictions
+            incorrect_indices = (predicted != labels).nonzero(as_tuple=True)[0]
+            for idx in incorrect_indices:
+                true_label = labels[idx].item()
+                incorrect_predictions[true_label] += 1
 
             predicted_correctly_on_epoch += (labels == predicted).sum().item()
+            print("Predicted correctly: %d out of %d" % (predicted_correctly_on_epoch, total))
+            print("Total Accuracy: %.3f%%" % ((predicted_correctly_on_epoch / total) * 100))
 
-    epoch_accuracy = (predicted_correctly_on_epoch / total) * 100  # Get accuracy as percentage
+    epoch_accuracy = (predicted_correctly_on_epoch / total) * 100
 
     print("Test dataset - Classified %d out of %d images correctly (%.3f%%)" %
           (predicted_correctly_on_epoch, total, epoch_accuracy))
 
+    # Print the incorrect predictions statistics
+    print("Incorrect predictions statistics:")
+    for class_id, count in incorrect_predictions.items():
+        print(f"Class {class_id}: {count} incorrect predictions")
+test_dataset = torchvision.datasets.Flowers102(root='./data', split='test', transform=data_transforms_test_val,
+                                               download=True)
 
-# Modify the train_network function to include validation and model saving
-def train_network(model, train_loader, val_loader, test_loader, loss_function, optimizer, n_epochs):
-    device = set_device()
-    best_val_accuracy = 0
-    best_model_path = "best_modeleff000505crop.pth"
-    start_time = time.time()  # Record start time
-
-    for epoch in range(n_epochs):
-        print("Epoch number %d " % (epoch + 1))
-        model.train()
-        running_loss = 0.0
-        running_correct = 0.0
-        total = 0
-
-        for data in train_loader:
-            images, labels = data
-            images = images.to(device)
-            labels = labels.to(device)
-            total += labels.size(0)
-
-            optimizer.zero_grad()
-
-            outputs = model(images)
-            _, predicted = torch.max(outputs.data, 1)
-            loss = loss_function(outputs, labels)
-
-            loss.backward()
-            optimizer.step()
-
-            running_loss += loss.item()
-            running_correct += (predicted == labels).sum().item()
-
-        epoch_loss = running_loss / len(train_loader)
-        epoch_accuracy = (running_correct / total) * 100
-        # log current time
-        pause = time.time()
-        print("Time elapsed: {:.2f} seconds".format(pause - start_time))
-        print("Training dataset - Classified %d out of %d images correctly (%.3f%%). Epoch loss: %.3f" %
-              (running_correct, total, epoch_accuracy, epoch_loss))
-        if epoch > (n_epochs - 100):
-
-            val_accuracy = validate_model(model, val_loader)
-            if val_accuracy > best_val_accuracy:
-                print("Validation accuracy improved from %.3f%% to %.3f%%. Saving the model." % (
-                    best_val_accuracy, val_accuracy))
-                best_val_accuracy = val_accuracy
-                state = {'model': model.state_dict(), 'optim': optimizer.state_dict()}
-                torch.save(state, best_model_path)
-    end_time = time.time()  # Record end time
-    duration = end_time - start_time
-    print("Training completed in {:.2f} seconds.".format(duration))
-    evaluate_model_on_test_set(model, test_loader)
-
+# Create data loaders to load the data in batches
+test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=16, shuffle=False)  # removed num_workers=2
 
 def efficientnet_b0(num_classes=102):
     return EfficientNet(1.0, 1.0, 0.2, num_classes)
-# Instantiate the custom model
-custom_modal = efficientnet_b0()
-device = set_device()
-custom_resnet = custom_modal.to(device)
+def test_saved_model(test_loader, model_path="best_model_eff_with.pth"):
+    # Load the saved model
+    saved_model = efficientnet_b0()
+    print("Loading saved model from: " + model_path)
+    device = set_device()
+    saved_model = saved_model.to(device)
 
-loss_function = nn.CrossEntropyLoss()
+    checkpoint = torch.load(model_path, map_location=device)  # Added map_location parameter
+    saved_model.load_state_dict(checkpoint['model'])
 
-optimizer = optim.SGD(custom_resnet.parameters(), lr=0.0005, momentum=0.9, weight_decay=0.0005)
+    # Evaluate the model on the test dataset
+    evaluate_model_on_test_set(saved_model, test_loader)
 
-# Increase the number of training epochs
-n_epochs = 1200
-
-train_network(custom_resnet, train_loader, val_loader, test_loader, loss_function, optimizer, n_epochs)
+# Test the saved model with the test dataset
+test_saved_model(test_loader)
