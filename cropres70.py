@@ -13,7 +13,6 @@ import time
 
 from torchvision.transforms import InterpolationMode
 
-
 class Swish(nn.Module):
     def forward(self, x):
         return x * torch.sigmoid(x)
@@ -104,27 +103,32 @@ class EfficientNet(nn.Module):
         return self.features(x)
 
 
+
+
 mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
 
 data_transforms_train = transforms.Compose([
-    transforms.RandomResizedCrop(224, scale=(0.8, 1.0), ratio=(0.75, 1.33)),
-    transforms.RandomRotation(degrees=30),
+  transforms.RandomRotation(degrees=(-20, 20)),
+    transforms.RandomHorizontalFlip(p=0.5),
+    transforms.RandomResizedCrop(size=(224, 224)),
     transforms.RandomHorizontalFlip(),
-    transforms.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.05),
-    transforms.Resize((224, 224), interpolation=InterpolationMode.BILINEAR),
+    transforms.RandomVerticalFlip(),
+    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2),
     transforms.RandomAffine(degrees=(-20, 20), translate=(0.1, 0.1), scale=(0.8, 1.2), shear=(-8, 8)),
     transforms.RandomPerspective(distortion_scale=0.2, p=0.5, interpolation=InterpolationMode.BILINEAR),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
+
 data_transforms_test_val = transforms.Compose([
-    transforms.Resize((300, 300)),
+ transforms.Resize((300, 300)),
     transforms.CenterCrop((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
+
 
 # loading dataset directly from torchvision as suggested in our paper and we split the dataset into train, val, and test
 train_dataset = torchvision.datasets.Flowers102(root='./data', split='train', transform=data_transforms_train,
@@ -199,9 +203,7 @@ def evaluate_model_on_test_set(model, test_loader):
 
 
 # Modify the train_network function to include validation and model saving
-# Modify the train_network function to include learning rate scheduling
-# Modify the train_network function to include learning rate scheduling
-def train_network(model, train_loader, val_loader, test_loader, loss_function, optimizer, scheduler, n_epochs):
+def train_network(model, train_loader, val_loader, test_loader, loss_function, optimizer, n_epochs):
     device = set_device()
     best_val_accuracy = 0
     best_model_path = "best_modeleff000505crop.pth"
@@ -239,17 +241,15 @@ def train_network(model, train_loader, val_loader, test_loader, loss_function, o
         print("Time elapsed: {:.2f} seconds".format(pause - start_time))
         print("Training dataset - Classified %d out of %d images correctly (%.3f%%). Epoch loss: %.3f" %
               (running_correct, total, epoch_accuracy, epoch_loss))
+        if epoch > (n_epochs - 100):
 
-        val_accuracy = validate_model(model, val_loader)
-        # Update learning rate scheduler
-        scheduler.step(val_accuracy)
-
-        if val_accuracy > best_val_accuracy:
-            print("Validation accuracy improved from %.3f%% to %.3f%%. Saving the model." % (
-                best_val_accuracy, val_accuracy))
-            best_val_accuracy = val_accuracy
-            state = {'model': model.state_dict(), 'optim': optimizer.state_dict()}
-            torch.save(state, best_model_path)
+            val_accuracy = validate_model(model, val_loader)
+            if val_accuracy > best_val_accuracy:
+                print("Validation accuracy improved from %.3f%% to %.3f%%. Saving the model." % (
+                    best_val_accuracy, val_accuracy))
+                best_val_accuracy = val_accuracy
+                state = {'model': model.state_dict(), 'optim': optimizer.state_dict()}
+                torch.save(state, best_model_path)
     end_time = time.time()  # Record end time
     duration = end_time - start_time
     print("Training completed in {:.2f} seconds.".format(duration))
@@ -258,8 +258,6 @@ def train_network(model, train_loader, val_loader, test_loader, loss_function, o
 
 def efficientnet_b0(num_classes=102):
     return EfficientNet(1.0, 1.0, 0.2, num_classes)
-
-
 # Instantiate the custom model
 custom_modal = efficientnet_b0()
 device = set_device()
@@ -269,9 +267,7 @@ loss_function = nn.CrossEntropyLoss()
 
 optimizer = optim.SGD(custom_resnet.parameters(), lr=0.0005, momentum=0.9, weight_decay=0.0005)
 
-scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.5, patience=10, verbose=True)
-
 # Increase the number of training epochs
 n_epochs = 1200
 
-train_network(custom_resnet, train_loader, val_loader, test_loader, loss_function, optimizer, scheduler, n_epochs)
+train_network(custom_resnet, train_loader, val_loader, test_loader, loss_function, optimizer, n_epochs)
