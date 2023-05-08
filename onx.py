@@ -1,8 +1,6 @@
 import torch
-import torchvision
 import torchvision.transforms as transforms
 import torch.nn as nn
-from collections import defaultdict
 import math
 from torch.utils.tensorboard import SummaryWriter
 
