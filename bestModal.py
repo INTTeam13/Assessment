@@ -204,7 +204,7 @@ def train_network(model, train_loader, val_loader, test_loader, loss_function, o
     device = set_device()
     best_val_accuracy = 0
     best_model_path = "best_modeleff000505crop.pth"
-    start_time = time.time()  # Record start time
+    start_time = time.time()
 
     for epoch in range(n_epochs):
         print("Epoch number %d " % (epoch + 1))

@@ -4,7 +4,6 @@ import torch.nn as nn
 import math
 from torch.utils.tensorboard import SummaryWriter
 
-
 class Swish(nn.Module):
     def forward(self, x):
         return x * torch.sigmoid(x)
