@@ -265,6 +265,6 @@ loss_function = nn.CrossEntropyLoss()
 optimizer = optim.SGD(custom_resnet.parameters(), lr=0.0005, momentum=0.9, weight_decay=0.0005)
 
 # Increase the number of training epochs
-n_epochs = 1200
+n_epochs = 1000
 
 train_network(custom_resnet, train_loader, val_loader, test_loader, loss_function, optimizer, n_epochs)
